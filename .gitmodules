@@ -1,0 +1,6 @@
+[submodule "pegtl"]
+	path = pegtl
+	url = https://github.com/ColinH/PEGTL.git
+[submodule "third-party/pegtl"]
+	path = third-party/pegtl
+	url = https://github.com/ColinH/PEGTL.git
