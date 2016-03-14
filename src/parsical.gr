@@ -1,0 +1,69 @@
+grammar:
+    (rule ";"!)+
+    ;
+
+rule:
+      token_rule
+    | sentence_rule
+    ;
+
+token_rule:
+      ID "="! REGEX
+    | ID "="! sentence_decl
+    ;
+
+sentence_rule:
+    ID ":"! sentence_decl
+    ;
+
+sentence_decl:
+    sentence_branch ("|"! sentence_branch)*
+    ;
+
+sentence_branch:
+    (sentence_part)+
+    ;
+
+sentence_part:
+    sentence_unary sentence_decorate? sentence_repeatition?
+    ;
+
+sentence_unary:
+      ID
+    | STRING
+    | "(" sentence_branch ")"
+    ;
+
+sentence_decorate:
+    "!"
+    ;
+
+sentence_repeatition:
+      "*"
+    | "+"
+    | "?"
+    ;
+
+ID = /[a-zA-Z][_a-zA-Z0-9]*/;
+
+STRING = "\""! STRING_CHAR+ "\""!;
+
+STRING_CHAR = STRING_NON_TRANS_CHAR | STRING_TRANS_CHAR;
+
+STRING_NON_TRANS_CHAR = /[^\\"]/;
+
+STRING_TRANS_CHAR = /\\([abfnrtv\\'"?]|[0-7][0-7][0-7]|x[0-9a-fA-F][0-9a-fA-F])/;
+
+REGEX = "/"! REGEX_CONTENT "/"!;
+
+REGEX_CONTENT = REGEX_BRANCH ("|"! REGEX_BRANCH)*;
+
+REGEX_BRANCH = REGEX_PART+ ;
+
+REGEX_PART = REGEX_UNARY REGEX_REPEATITION? ;
+
+REGEX_UNARY = STRING_CHAR | "("! REGEX_CONTENT ")"!;
+
+REGEX_REPEATITION = "*" | "+" | "?";
+
+_ = /[ \t\v\r\n]*/;

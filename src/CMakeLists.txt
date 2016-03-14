@@ -1,1 +1,1 @@
-add_executable(parsical main.cpp)
+add_executable(parsical main.cpp parsical-parser.cpp)
