@@ -21,7 +21,7 @@ sentence_decl:
     ;
 
 sentence_branch:
-    (sentence_part)+
+    sentence_part+
     ;
 
 sentence_part:
@@ -31,7 +31,7 @@ sentence_part:
 sentence_unary:
       ID
     | STRING
-    | "(" sentence_branch ")"
+    | "("! sentence_branch ")"!
     ;
 
 sentence_decorate:
@@ -64,6 +64,6 @@ REGEX_PART = REGEX_UNARY REGEX_REPEATITION? ;
 
 REGEX_UNARY = STRING_CHAR | "("! REGEX_CONTENT ")"!;
 
-REGEX_REPEATITION = "*" | "+" | "?";
+REGEX_REPEATITION = /[*+?]/
 
 _ = /[ \t\v\r\n]*/;

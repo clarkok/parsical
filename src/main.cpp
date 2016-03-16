@@ -15,7 +15,7 @@ main(int argc, char **argv)
 
     parsical::Parser::ParsicalParser pp;
 
-    pp.parse(*argv);
+    pp.parse_file(*argv);
 
     return 0;
 }
