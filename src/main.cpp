@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "parsical-parser.hpp"
+#include "print-visitor.hpp"
 
 using namespace std;
 
@@ -8,14 +9,17 @@ int
 main(int argc, char **argv)
 {
     --argc; ++argv;
-    if (!argv) {
+    if (!argc) {
         std::cout << "No input file" << std::endl;
         return -1;
     }
 
-    parsical::Parser::ParsicalParser pp;
+    parsical::parser::ParsicalParser pp;
+    parsical::PrintVisitor pv(std::cout);
 
-    pp.parse_file(*argv);
+    auto *ast = pp.parse_file(*argv);
+
+    ast->accept(&pv);
 
     return 0;
 }

@@ -23,7 +23,8 @@ parse_string_trans_char(Location location, std::string::iterator &iter)
 TStringNonTransChar *
 parse_string_non_trans_char(Location location, std::string::iterator &iter)
 {
-    return new TStringNonTransChar(location, std::string(iter, ++iter));
+    auto begin = iter++;
+    return new TStringNonTransChar(location, std::string(begin, iter));
 }
 
 TStringChar *

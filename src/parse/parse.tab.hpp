@@ -30,11 +30,11 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_PARSE_TAB_H_INCLUDED
-# define YY_YY_PARSE_TAB_H_INCLUDED
+#ifndef YY_YY_HOME_C_C_STACK_PARSICAL_SRC_PARSE_PARSE_TAB_HPP_INCLUDED
+# define YY_YY_HOME_C_C_STACK_PARSICAL_SRC_PARSE_PARSE_TAB_HPP_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -56,12 +56,12 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 17 "parse.y" /* yacc.c:1909  */
+#line 21 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1909  */
 
     parsical::parser::TreeNode *node;
-    std::string literal;
+    const char *literal;
 
-#line 65 "parse.tab.h" /* yacc.c:1909  */
+#line 65 "/home/c/c-stack/parsical/src/parse/parse.tab.hpp" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -72,4 +72,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_PARSE_TAB_H_INCLUDED  */
+#endif /* !YY_YY_HOME_C_C_STACK_PARSICAL_SRC_PARSE_PARSE_TAB_HPP_INCLUDED  */

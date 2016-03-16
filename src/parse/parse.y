@@ -1,22 +1,26 @@
 %{
-#include "parse.tab.h"
+#include <iostream>
 #include "../parsical-parser.hpp"
+#include "parse.tab.hpp"
 
 #include "parse_regex.hpp"
 
 using namespace parsical::parser;
 
 extern int yylineno;
+int yylex();
+int yyerror(const char *);
 
 #define _current_location   \
     Location("", yylineno, 0)
 %}
 
 %token ID STRING REGEX
+%debug
 
 %union {
     parsical::parser::TreeNode *node;
-    std::string literal;
+    const char *literal;
 }
 
 %type<node>     grammar rule token_rule sentence_rule sentence_decl sentence_branch sentence_part
@@ -29,17 +33,21 @@ grammar:
         {
             auto *grammar = dynamic_cast<Grammar*>($1);
             Grammar::GrammarRep1 rep;
-            rep.rule = dynamic_cast<Rule*>($2);
+            rep.rule.reset(dynamic_cast<Rule*>($2));
             grammar->grammar_rep_1.emplace_back(std::move(rep));
-            result = $$ = grammar;
+            $$ = grammar;
+
+            result = dynamic_cast<Grammar*>($$);
         }
     | rule
         {
             auto *grammar = new Grammar(_current_location);
             Grammar::GrammarRep1 rep;
-            rep.rule = dynamic_cast<Rule*>($1);
+            rep.rule.reset(dynamic_cast<Rule*>($1));
             grammar->grammar_rep_1.emplace_back(std::move(rep));
             $$ = grammar;
+
+            result = dynamic_cast<Grammar*>($$);
         }
     ;
 
@@ -68,7 +76,7 @@ token_rule:
 sentence_rule:
       id ':' sentence_decl
         {
-            $$ = new SentenceRule(_current_location, dynamic_cast<TId>($1), dynamic_cast<SentenceDecl*>($3));
+            $$ = new SentenceRule(_current_location, dynamic_cast<TId*>($1), dynamic_cast<SentenceDecl*>($3));
         }
     ;
 
@@ -77,7 +85,7 @@ sentence_decl:
         {
             auto *sentence_decl = dynamic_cast<SentenceDecl*>($1);
             SentenceDecl::SentenceDeclRep1 rep;
-            rep.sentence_branch = dynamic_cast<SentenceBranch*>($3);
+            rep.sentence_branch.reset(dynamic_cast<SentenceBranch*>($3));
             sentence_decl->sentence_decl_rep_1.emplace_back(std::move(rep));
             $$ = sentence_decl;
         }
@@ -226,3 +234,9 @@ regex:
         }
     ;
 %%
+int yyerror(const char *msg)
+{
+    std::cerr << msg << std::endl;
+    std::cerr << yylineno << std::endl;
+    exit(-1);
+}

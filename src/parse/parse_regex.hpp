@@ -15,6 +15,38 @@ parse_regex_repeatition(Location location, std::string::iterator &iter)
         );
 }
 
+TRegexRange *
+parse_regex_range(Location location, std::string::iterator &iter)
+{
+    auto *string_char_1 = parse_string_char(location, iter);
+
+    if (*iter == '-') {
+        ++iter;
+
+        return new TRegexRange_Rule2(
+                location,
+                string_char_1,
+                parse_string_char(location, iter)
+            );
+    }
+    else {
+        return new TRegexRange_Rule1(
+                location,
+                string_char_1
+            );
+    }
+}
+
+TRegexNeg *
+parse_regex_neg(Location location, std::string::iterator &iter)
+{
+    auto begin = iter++;
+    return new TRegexNeg(
+            location,
+            std::string(begin, iter)
+        );
+}
+
 TRegexContent *
 parse_regex_content(Location location, std::string::iterator &iter);
 
@@ -29,6 +61,21 @@ parse_regex_unary(Location location, std::string::iterator &iter)
                 location,
                 regex_content
             );
+    }
+    else if (*iter == '[') {
+        ++iter;
+        TRegexNeg *regex_neg_opt = nullptr;
+        if (*iter == '^') {
+            regex_neg_opt = parse_regex_neg(location, iter);
+        }
+
+        auto *regex_unary = new TRegexUnary_Rule3(location, regex_neg_opt);
+
+        while (*iter != ']') {
+            regex_unary->regex_range_plus.emplace_back(parse_regex_range(location, iter));
+        }
+        ++iter;
+        return regex_unary;
     }
     else {
         return new TRegexUnary_Rule1(
@@ -63,7 +110,7 @@ parse_regex_branch(Location location, std::string::iterator &iter)
 {
     auto *ret = new TRegexBranch(location);
 
-    while (*iter != '|') {
+    while (*iter != '|' && *iter != '/' && *iter != ')') {
         ret->regex_part_plus.emplace_back(parse_regex_part(location, iter));
     }
 
@@ -78,7 +125,8 @@ parse_regex_content(Location location, std::string::iterator &iter)
             parse_regex_branch(location, iter)
         );
 
-    while (*iter++ == '|') {
+    while (*iter == '|') {
+        ++iter;
         TRegexContent::TRegexContentRep1 rep;
         rep.regex_branch.reset(parse_regex_branch(location, iter));
         ret->regex_content_rep_1.emplace_back(std::move(rep));

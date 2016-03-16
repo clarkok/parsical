@@ -1,5 +1,6 @@
+#line 2 "/home/c/c-stack/parsical/src/parse/lex.yy.cpp"
 
-#line 3 "lex.yy.c"
+#line 4 "/home/c/c-stack/parsical/src/parse/lex.yy.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -380,7 +381,7 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[23] =
     {   0,
-        2,    2,    7,    5,    2,    2,    5,    5,    1,    2,
+        0,    0,    7,    5,    2,    2,    5,    5,    1,    1,
         0,    0,    0,    0,    1,    3,    0,    0,    4,    0,
         0,    0
     } ;
@@ -425,40 +426,40 @@ static yyconst flex_int32_t yy_meta[16] =
 
 static yyconst flex_int16_t yy_base[29] =
     {   0,
-        0,    0,   43,   63,   14,   16,   22,   17,    0,   18,
-       18,   16,   19,   21,    0,   63,   19,    0,   63,   17,
-        0,   63,   31,   39,   43,   50,   54,   56
+        0,    0,   48,   57,   57,   57,   26,   16,    0,   57,
+       12,   10,   13,   15,    0,   57,   15,    0,   57,   13,
+        0,   57,   25,   33,   37,   44,   48,   50
     } ;
 
 static yyconst flex_int16_t yy_def[29] =
     {   0,
        22,    1,   22,   22,   22,   22,   23,   24,   25,   22,
-       23,   26,   24,   22,   25,   22,   22,   27,   22,   22,
+       23,   26,   24,   24,   25,   22,   22,   27,   22,   22,
        28,    0,   22,   22,   22,   22,   22,   22
     } ;
 
-static yyconst flex_int16_t yy_nxt[79] =
+static yyconst flex_int16_t yy_nxt[73] =
     {   0,
         4,    5,    6,    7,    4,    8,    4,    4,    9,    9,
-        4,    4,    9,    9,    9,   10,   10,   10,   10,   10,
-       10,   16,   17,   11,   19,   20,   13,   14,   12,   14,
-       18,   11,   12,   11,   11,   11,   11,   11,   11,   13,
-       13,   13,   22,   13,   13,   13,   13,   15,   15,   15,
-       15,   11,   11,   22,   11,   22,   22,   11,   21,   21,
-       11,   11,    3,   22,   22,   22,   22,   22,   22,   22,
-       22,   22,   22,   22,   22,   22,   22,   22
+        4,   10,    9,    9,    9,   16,   17,   22,   19,   11,
+       13,   20,   12,   14,   18,   11,   14,   11,   11,   11,
+       11,   11,   11,   13,   13,   13,   12,   13,   13,   13,
+       13,   15,   15,   15,   15,   11,   11,   22,   11,   22,
+       22,   11,   21,   21,   11,   11,    3,   22,   22,   22,
+       22,   22,   22,   22,   22,   22,   22,   22,   22,   22,
+       22,   22
     } ;
 
-static yyconst flex_int16_t yy_chk[79] =
+static yyconst flex_int16_t yy_chk[73] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    5,    5,    6,    6,   10,
-       10,   11,   12,   20,   13,   17,   14,    8,   11,   13,
-       12,   23,    7,   23,   23,   23,   23,   23,   23,   24,
-       24,   24,    3,   24,   24,   24,   24,   25,   25,   25,
-       25,   26,   26,    0,   26,    0,    0,   26,   27,   27,
-       28,   28,   22,   22,   22,   22,   22,   22,   22,   22,
-       22,   22,   22,   22,   22,   22,   22,   22
+        1,    1,    1,    1,    1,   11,   12,   14,   13,   20,
+       14,   17,   11,   13,   12,   23,    8,   23,   23,   23,
+       23,   23,   23,   24,   24,   24,    7,   24,   24,   24,
+       24,   25,   25,   25,   25,   26,   26,    3,   26,    0,
+        0,   26,   27,   27,   28,   28,   22,   22,   22,   22,
+       22,   22,   22,   22,   22,   22,   22,   22,   22,   22,
+       22,   22
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -475,8 +476,11 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "lex.l"
-#line 480 "lex.yy.c"
+#line 1 "/home/c/c-stack/parsical/src/parse/lex.l"
+#line 2 "/home/c/c-stack/parsical/src/parse/lex.l"
+#include "../parsical-parser.hpp"
+#include "parse.tab.hpp"
+#line 484 "/home/c/c-stack/parsical/src/parse/lex.yy.cpp"
 
 #define INITIAL 0
 
@@ -690,9 +694,9 @@ YY_DECL
 		}
 
 	{
-#line 6 "lex.l"
+#line 10 "/home/c/c-stack/parsical/src/parse/lex.l"
 
-#line 696 "lex.yy.c"
+#line 700 "/home/c/c-stack/parsical/src/parse/lex.yy.cpp"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -725,7 +729,7 @@ yy_match:
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 63 );
+		while ( yy_base[yy_current_state] != 57 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -751,38 +755,38 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 7 "lex.l"
-{ return ID; }
+#line 11 "/home/c/c-stack/parsical/src/parse/lex.l"
+{ yylval.literal = yytext; return ID; }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 8 "lex.l"
-{ }
+#line 12 "/home/c/c-stack/parsical/src/parse/lex.l"
+{ if (*yytext == '\n') ++yylineno; }
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 9 "lex.l"
-{ return STRING; }
+#line 13 "/home/c/c-stack/parsical/src/parse/lex.l"
+{ yylval.literal = yytext; return STRING; }
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 10 "lex.l"
-{ return REGEX; }
+#line 14 "/home/c/c-stack/parsical/src/parse/lex.l"
+{ yylval.literal = yytext; return REGEX; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 11 "lex.l"
+#line 15 "/home/c/c-stack/parsical/src/parse/lex.l"
 { return *yytext; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 12 "lex.l"
+#line 16 "/home/c/c-stack/parsical/src/parse/lex.l"
 ECHO;
 	YY_BREAK
-#line 786 "lex.yy.c"
+#line 790 "/home/c/c-stack/parsical/src/parse/lex.yy.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1777,7 +1781,9 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 11 "lex.l"
+#line 15 "/home/c/c-stack/parsical/src/parse/lex.l"
 
 
+int yywrap()
+{ return 1; }
 
