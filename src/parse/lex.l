@@ -13,3 +13,5 @@ REGEX   "/"([^\\/]|("\\/"))+"/"
 {REGEX}     { yylval.literal = yytext; return REGEX; }
 .           { return *yytext; }
 %%
+int yywrap()
+{ return 1; }

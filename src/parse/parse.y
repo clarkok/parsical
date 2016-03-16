@@ -31,7 +31,7 @@ grammar:
             Grammar::GrammarRep1 rep;
             rep.rule = dynamic_cast<Rule*>($2);
             grammar->grammar_rep_1.emplace_back(std::move(rep));
-            $$ = grammar;
+            result = $$ = grammar;
         }
     | rule
         {

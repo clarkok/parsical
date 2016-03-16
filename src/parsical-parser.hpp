@@ -59,6 +59,34 @@ class TRegexPart;
 class TRegexUnary;
 class TRegexRepeatition;
 
+class Visitor
+{
+public:
+    virtual ~Visitor() = default;
+
+    virtual void visit(Grammar *)               { }
+    virtual void visit(Rule *)                  { }
+    virtual void visit(TokenRule *)             { }
+    virtual void visit(SentenceRule *)          { }
+    virtual void visit(SentenceDecl *)          { }
+    virtual void visit(SentenceBranch *)        { }
+    virtual void visit(SentencePart *)          { }
+    virtual void visit(SentenceUnary *)         { }
+    virtual void visit(SentenceDecorate *)      { }
+    virtual void visit(SentenceRepeatition *)   { }
+    virtual void visit(TId *)                   { }
+    virtual void visit(TString *)               { }
+    virtual void visit(TStringChar *)           { }
+    virtual void visit(TStringNonTransChar *)   { }
+    virtual void visit(TStringTransChar *)      { }
+    virtual void visit(TRegex *)                { }
+    virtual void visit(TRegexContent *)         { }
+    virtual void visit(TRegexBranch *)          { }
+    virtual void visit(TRegexPart *)            { }
+    virtual void visit(TRegexUnary *)           { }
+    virtual void visit(TRegexRepeatition *)     { }
+};
+
 struct Location
 {
     std::string file;
@@ -671,6 +699,8 @@ public:
 
     void parse_file(const std::string &filename);
 };
+
+extern Grammar *result;
 
 }
 

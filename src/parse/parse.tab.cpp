@@ -1239,7 +1239,7 @@ yyreduce:
             Grammar::GrammarRep1 rep;
             rep.rule = dynamic_cast<Rule*>((yyvsp[0].node));
             grammar->grammar_rep_1.emplace_back(std::move(rep));
-            (yyval.node) = grammar;
+            result = (yyval.node) = grammar;
         }
 #line 1245 "parse.tab.c" /* yacc.c:1646  */
     break;
