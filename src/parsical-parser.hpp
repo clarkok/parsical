@@ -8,7 +8,7 @@
 
 namespace parsical {
 
-namespace Parser {
+namespace parser {
 
 enum NodeType {
     N_TOKEN = 256,
