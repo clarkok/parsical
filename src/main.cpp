@@ -2,7 +2,7 @@
 
 #include "parsical-parser.hpp"
 #include "print-visitor.hpp"
-#include "lexer.hpp"
+#include "token-info.hpp"
 
 using namespace std;
 

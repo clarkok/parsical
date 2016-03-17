@@ -1,7 +1,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "lexer.hpp"
+#include "token-info.hpp"
 
 using namespace parsical;
 
@@ -82,6 +82,8 @@ TokenInfoVisitor::regexRangeToString(parser::TRegexRange *node)
                     dynamic_cast<parser::TRegexRange_Rule2*>(node)->string_char_2.get());
         default: assert(false);
     }
+
+    return "";
 }
 
 std::string
@@ -108,6 +110,8 @@ TokenInfoVisitor::regexUnaryToString(parser::TRegexUnary *node)
         }
         default: assert(false);
     }
+
+    return "";
 }
 
 std::string

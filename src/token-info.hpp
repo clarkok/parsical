@@ -1,5 +1,5 @@
-#ifndef _PARSICAL_LEXER_HPP_
-#define _PARSICAL_LEXER_HPP_
+#ifndef _PARSICAL_TOKEN_INFO_HPP_
+#define _PARSICAL_TOKEN_INFO_HPP_
 
 #include <vector>
 #include <map>
