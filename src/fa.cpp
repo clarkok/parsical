@@ -88,3 +88,19 @@ FA::nfa2dfa()
 
     return fa;
 }
+
+void
+FA::output(std::ostream &_os) const
+{
+    for (auto &state : *this) {
+        _os << state.id << "\t:" << state.accept << std::endl;
+
+        for (auto &link : state.links) {
+            _os << "\t" << (int)link.first;
+            if (std::isprint(link.first)) {
+                _os << '(' << (char)link.first << ')';
+            }
+            _os << "\t" << link.second << std::endl;
+        }
+    }
+}

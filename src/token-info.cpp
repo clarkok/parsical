@@ -151,7 +151,7 @@ TokenInfoVisitor::regexToString(parser::TRegex *node)
 
 void
 TokenInfoVisitor::visit(parser::TokenRule_Rule1 *node)
-{ _token_table.emplace_back(node->id->literal, node->regex.get()); }
+{ _regex_token_table.emplace_back(node->id->literal, node->regex.get()); }
 
 void
 TokenInfoVisitor::visit(parser::TString *node)
@@ -159,8 +159,8 @@ TokenInfoVisitor::visit(parser::TString *node)
     std::string original = recoverString(node);
 
     if (_string_literal_map.find(original) == _string_literal_map.end()) {
-        _string_literal_map[original] = _token_table.size();
-        _token_table.emplace_back("T__" + std::to_string(_annoymous_counter++), node);
+        _string_literal_map[original] = _string_token_table.size();
+        _string_token_table.emplace_back("T__" + std::to_string(_annoymous_counter++), node);
     }
 }
 
@@ -171,17 +171,13 @@ TokenInfoVisitor::lexerFA()
 
     fa->createState();  // start state is always 0
 
-    int accept = 256;
-    for (auto token : _token_table) {
-        assert(token.content->getType() == parser::N_STRING ||
-               token.content->getType() == parser::N_REGEX);
+    int accept = 0;
+    for (auto token : _string_token_table) {
+        insertStringIntoFa(fa.get(), token.string, accept++);
+    }
 
-        if (token.content->getType() == parser::N_STRING) {
-            insertStringIntoFa(fa.get(), dynamic_cast<parser::TString*>(token.content), accept++);
-        }
-        else {
-            insertRegexIntoFa(fa.get(), dynamic_cast<parser::TRegex*>(token.content), accept++);
-        }
+    for (auto token : _regex_token_table) {
+        insertRegexIntoFa(fa.get(), token.regex, accept++);
     }
 
     return fa;
@@ -243,7 +239,7 @@ TokenInfoVisitor::insertRegexPartIntoFa(FA *fa, parser::TRegexPart *regex_part, 
         if (regex_part->regex_repeatition_opt->literal == "*") {
             int new_state = fa->createState();
             fa->addLink(start, accept_state, FA::ANY_LINK);
-            fa->addLink(start, new_state, FA::ANY_LINK);
+            fa->addLink(new_state, start, FA::ANY_LINK);
             return new_state;
         }
         else if (regex_part->regex_repeatition_opt->literal == "+") {

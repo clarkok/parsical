@@ -11,20 +11,31 @@
 namespace parsical
 {
 
-struct Token
+struct StringToken
 {
     std::string name;
-    parser::TreeNode *content;
+    parser::TString *string;
 
-    Token(std::string name, parser::TreeNode *content)
-        : name(name), content(content)
+    StringToken(std::string name, parser::TString *string)
+        : name(name), string(string)
+    { }
+};
+
+struct RegexToken
+{
+    std::string name;
+    parser::TRegex *regex;
+
+    RegexToken(std::string name, parser::TRegex *regex)
+        : name(name), regex(regex)
     { }
 };
 
 class TokenInfoVisitor : public parser::Visitor
 {
-    std::vector<Token>          _token_table;
+    std::vector<StringToken>    _string_token_table;
     std::map<std::string, int>  _string_literal_map;
+    std::vector<RegexToken>     _regex_token_table;
     int _annoymous_counter;
 
     static char recoverNonTransChar(parser::TStringNonTransChar *node);
@@ -58,11 +69,17 @@ public:
     define_visitor_visit(parser::TokenRule_Rule1)
     define_visitor_visit(parser::TString)
 
-    auto begin() -> decltype(TokenInfoVisitor::_token_table.begin())
-    { return _token_table.begin(); }
+    auto stringBegin() -> decltype(TokenInfoVisitor::_string_token_table.begin())
+    { return _string_token_table.begin(); }
 
-    auto end() -> decltype(TokenInfoVisitor::_token_table.end())
-    { return _token_table.end(); }
+    auto stringEnd() -> decltype(TokenInfoVisitor::_string_token_table.end())
+    { return _string_token_table.end(); }
+
+    auto regexBegin() -> decltype(TokenInfoVisitor::_regex_token_table.begin())
+    { return _regex_token_table.begin(); }
+
+    auto regexEnd() -> decltype(TokenInfoVisitor::_regex_token_table.end())
+    { return _regex_token_table.end(); }
 
     std::unique_ptr<FA> lexerFA();
 };

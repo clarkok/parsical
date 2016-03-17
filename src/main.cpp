@@ -1,8 +1,10 @@
 #include <iostream>
+#include <fstream>
 
 #include "parsical-parser.hpp"
 #include "print-visitor.hpp"
 #include "token-info.hpp"
+#include "lexer.hpp"
 
 using namespace std;
 
@@ -16,39 +18,20 @@ main(int argc, char **argv)
     }
 
     parsical::parser::ParsicalParser pp;
-    parsical::TokenInfoVisitor token_info;
-    parsical::PrintVisitor pv(std::cout);
-
     auto *ast = pp.parse_file(*argv);
 
-    ast->accept(&token_info);
+    parsical::Lexer lexer_generator(ast);
 
-    /*
-    for (auto &token : token_info) {
-        std::cout << token.name << '\t';
-        if (token.content->getType() == parsical::parser::N_STRING) {
-            std::cout << parsical::TokenInfoVisitor::recoverString(
-                    dynamic_cast<parsical::parser::TString*>(token.content));
-        }
-        else {
-            std::cout << parsical::TokenInfoVisitor::regexToString(
-                    dynamic_cast<parsical::parser::TRegex*>(token.content));
-        }
-        std::cout << std::endl;
-    }
-    */
+    lexer_generator.outputFATables(std::cout);
 
-    auto fa = token_info.lexerFA()->nfa2dfa();
+    std::ofstream ftoken("./output.token");
+    lexer_generator.outputTokenEnum(ftoken);
 
-    for (auto &state : *fa) {
-        std::cout << state.id << std::endl;
+    std::ofstream fnfa("./output.nfa");
+    lexer_generator.outputNFA(fnfa);
 
-        for (auto &link : state.links) {
-            std::cout << "    " << '(' << (int)link.first <<  ')' << "\t" << link.second << std::endl;
-        }
-
-        std::cout << std::endl;
-    }
+    std::ofstream fdfa("./output.dfa");
+    lexer_generator.outputDFA(fdfa);
 
     return 0;
 }

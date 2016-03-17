@@ -1,0 +1,54 @@
+#include <string>
+
+enum TokenType
+{
+    /* TokenType */
+};
+
+class Lexer
+{
+    int _next_token;
+    std::string _content;
+    std::string::iterator _iter;
+
+    std::string _token;
+    int _line;
+    int _column;
+public:
+    Lexer(std::string &&content)
+        : _content(content), _iter(_content.begin()), _token(""), _line(1), _column(1)
+    { }
+
+    int peek()
+    { return _next_token; }
+
+    void next()
+    {
+        /* State Machine */
+
+        static const int next_state[0][0];
+        static const int accept_state[0];
+
+        int state = 0;
+        auto begin = _iter;
+
+        while (next_state[state][(int)*_iter] != -1) {
+            if (*_iter == '\n') {
+                ++_line; _column = 1;
+            }
+            else {
+                ++_column;
+            }
+
+            state = next_state[state][(int)*_iter++];
+        }
+
+        _token = std::string(begin, _iter);
+        if (accept_state[state] != -1) {
+            _next_token = accept_state[state];
+        }
+        else {
+            _next_token = -1;
+        }
+    }
+};

@@ -6,6 +6,7 @@
 #include <set>
 #include <memory>
 #include <cassert>
+#include <iostream>
 
 namespace parsical {
 
@@ -158,7 +159,21 @@ public:
     end() -> decltype(FA::_states.end())
     { return _states.end(); }
 
+    inline auto
+    begin() const -> decltype(FA::_states.cbegin())
+    { return _states.cbegin(); }
+
+    inline auto
+    end() const -> decltype(FA::_states.cend())
+    { return _states.cend(); }
+
+    inline size_t
+    stateCount() const
+    { return _states.size(); }
+
     std::unique_ptr<FA> nfa2dfa();
+
+    void output(std::ostream &_os) const;
 };
 
 }
