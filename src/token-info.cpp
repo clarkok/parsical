@@ -1,5 +1,6 @@
 #include <cassert>
 #include <iostream>
+#include <set>
 
 #include "token-info.hpp"
 
@@ -161,4 +162,156 @@ TokenInfoVisitor::visit(parser::TString *node)
         _string_literal_map[original] = _token_table.size();
         _token_table.emplace_back("T__" + std::to_string(_annoymous_counter++), node);
     }
+}
+
+std::unique_ptr<FA>
+TokenInfoVisitor::lexerFA()
+{
+    std::unique_ptr<FA> fa(new FA());
+
+    fa->createState();  // start state is always 0
+
+    int accept = 256;
+    for (auto token : _token_table) {
+        assert(token.content->getType() == parser::N_STRING ||
+               token.content->getType() == parser::N_REGEX);
+
+        if (token.content->getType() == parser::N_STRING) {
+            insertStringIntoFa(fa.get(), dynamic_cast<parser::TString*>(token.content), accept++);
+        }
+        else {
+            insertRegexIntoFa(fa.get(), dynamic_cast<parser::TRegex*>(token.content), accept++);
+        }
+    }
+
+    return fa;
+}
+
+int
+TokenInfoVisitor::insertStringIntoFa(FA *fa, parser::TString *string, int accept)
+{
+    int state = 0;
+
+    for (auto &rep : string->string_rep_1) {
+        int new_state = fa->createState();
+        fa->addLink(new_state, state, recoverChar(rep.get()));
+        state = new_state;
+    }
+
+    fa->getState(state).accept = accept;
+    return state;
+}
+
+int
+TokenInfoVisitor::insertRegexIntoFa(FA *fa, parser::TRegex *regex, int accept)
+{
+    int accept_state = insertRegexContentIntoFa(fa, regex->regex_content.get(), 0);
+    fa->getState(accept_state).accept = accept;
+    return accept_state;
+}
+
+int
+TokenInfoVisitor::insertRegexContentIntoFa(FA *fa, parser::TRegexContent *regex_content, int start)
+{
+    int accept_state = fa->createState();
+
+    int state = insertRegexBranchIntoFa(fa, regex_content->regex_branch.get(), start);
+    fa->addLink(accept_state, state, FA::ANY_LINK);
+
+    for (auto &rep : regex_content->regex_content_rep_1) {
+        state = insertRegexBranchIntoFa(fa, rep.regex_branch.get(), start);
+        fa->addLink(accept_state, state, FA::ANY_LINK);
+    }
+
+    return accept_state;
+}
+
+int
+TokenInfoVisitor::insertRegexBranchIntoFa(FA *fa, parser::TRegexBranch *regex_branch, int start)
+{
+    for (auto &plus : regex_branch->regex_part_plus) {
+        start = insertRegexPartIntoFa(fa, plus.get(), start);
+    }
+    return start;
+}
+
+int
+TokenInfoVisitor::insertRegexPartIntoFa(FA *fa, parser::TRegexPart *regex_part, int start)
+{
+    int accept_state = insertRegexUnaryIntoFa(fa, regex_part->regex_unary.get(), start);
+    if (regex_part->regex_repeatition_opt) {
+        if (regex_part->regex_repeatition_opt->literal == "*") {
+            int new_state = fa->createState();
+            fa->addLink(start, accept_state, FA::ANY_LINK);
+            fa->addLink(start, new_state, FA::ANY_LINK);
+            return new_state;
+        }
+        else if (regex_part->regex_repeatition_opt->literal == "+") {
+            fa->addLink(start, accept_state, FA::ANY_LINK);
+            return accept_state;
+        }
+        else {
+            // ?
+            fa->addLink(accept_state, start, FA::ANY_LINK);
+            return accept_state;
+        }
+    }
+    else {
+        return accept_state;
+    }
+}
+
+int
+TokenInfoVisitor::insertRegexUnaryIntoFa(FA *fa, parser::TRegexUnary *regex_unary, int start)
+{
+    switch (regex_unary->getRule()) {
+        case 1: {
+            int accept_state = fa->createState();
+            fa->addLink(accept_state, start, recoverChar(
+                        dynamic_cast<parser::TRegexUnary_Rule1*>(regex_unary)->string_char.get()));
+            return accept_state;
+        }
+        case 2: {
+            return insertRegexContentIntoFa(fa, 
+                        dynamic_cast<parser::TRegexUnary_Rule2*>(regex_unary)->regex_content.get(), start);
+        }
+        case 3: {
+            int accept_state = fa->createState();
+            auto *rule = dynamic_cast<parser::TRegexUnary_Rule3*>(regex_unary);
+
+            std::set<char> char_set;
+            for (auto &plus : rule->regex_range_plus) {
+                if (plus->getRule() == 1) {
+                    char_set.insert(recoverChar(dynamic_cast<parser::TRegexRange_Rule1*>(plus.get())->string_char.get()));
+                }
+                else {
+                    int ch1 = recoverChar(dynamic_cast<parser::TRegexRange_Rule2*>(plus.get())->string_char_1.get());
+                    int ch2 = recoverChar(dynamic_cast<parser::TRegexRange_Rule2*>(plus.get())->string_char_2.get());
+
+                    for (int i = ch1; i <= ch2; ++i) {
+                        char_set.insert(i);
+                    }
+                }
+            }
+
+            if (rule->regex_neg_opt) {
+                for (int i = 0; i < 256; ++i) {
+                    if (char_set.find(i) == char_set.end()) {
+                        fa->addLink(accept_state, start, i);
+                    }
+                }
+            }
+            else {
+                for (int i = 0; i < 256; ++i) {
+                    if (char_set.find(i) != char_set.end()) {
+                        fa->addLink(accept_state, start, i);
+                    }
+                }
+            }
+
+            return accept_state;
+        }
+    }
+
+    assert(false);
 }

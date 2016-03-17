@@ -23,6 +23,7 @@ main(int argc, char **argv)
 
     ast->accept(&token_info);
 
+    /*
     for (auto &token : token_info) {
         std::cout << token.name << '\t';
         if (token.content->getType() == parsical::parser::N_STRING) {
@@ -33,6 +34,19 @@ main(int argc, char **argv)
             std::cout << parsical::TokenInfoVisitor::regexToString(
                     dynamic_cast<parsical::parser::TRegex*>(token.content));
         }
+        std::cout << std::endl;
+    }
+    */
+
+    auto fa = token_info.lexerFA()->nfa2dfa();
+
+    for (auto &state : *fa) {
+        std::cout << state.id << std::endl;
+
+        for (auto &link : state.links) {
+            std::cout << "    " << '(' << (int)link.first <<  ')' << "\t" << link.second << std::endl;
+        }
+
         std::cout << std::endl;
     }
 

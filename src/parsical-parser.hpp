@@ -326,6 +326,24 @@ public:
     { v->visit(this); }
 };
 
+class TRegexNeg : public TokenNode
+{
+public:
+    TRegexNeg(Location location, std::string literal)
+        : TokenNode(location, literal)
+    { }
+
+    virtual ~TRegexNeg() = default;
+
+    virtual int
+    getType() const
+    { return N_REGEX_NEG; }
+
+    virtual void
+    accept(Visitor *v)
+    { v->visit(this); }
+};
+
 class TRegexUnary_Rule3 : public TRegexUnary
 {
 public:
@@ -341,24 +359,6 @@ public:
     virtual int
     getRule() const
     { return 3; }
-
-    virtual void
-    accept(Visitor *v)
-    { v->visit(this); }
-};
-
-class TRegexNeg : public TokenNode
-{
-public:
-    TRegexNeg(Location location, std::string literal)
-        : TokenNode(location, literal)
-    { }
-
-    virtual ~TRegexNeg() = default;
-
-    virtual int
-    getType() const
-    { return N_REGEX_NEG; }
 
     virtual void
     accept(Visitor *v)
