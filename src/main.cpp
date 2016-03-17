@@ -2,6 +2,7 @@
 
 #include "parsical-parser.hpp"
 #include "print-visitor.hpp"
+#include "lexer.hpp"
 
 using namespace std;
 
@@ -15,11 +16,25 @@ main(int argc, char **argv)
     }
 
     parsical::parser::ParsicalParser pp;
+    parsical::TokenInfoVisitor token_info;
     parsical::PrintVisitor pv(std::cout);
 
     auto *ast = pp.parse_file(*argv);
 
-    ast->accept(&pv);
+    ast->accept(&token_info);
+
+    for (auto &token : token_info) {
+        std::cout << token.name << '\t';
+        if (token.content->getType() == parsical::parser::N_STRING) {
+            std::cout << parsical::TokenInfoVisitor::recoverString(
+                    dynamic_cast<parsical::parser::TString*>(token.content));
+        }
+        else {
+            std::cout << parsical::TokenInfoVisitor::regexToString(
+                    dynamic_cast<parsical::parser::TRegex*>(token.content));
+        }
+        std::cout << std::endl;
+    }
 
     return 0;
 }

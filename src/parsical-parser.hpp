@@ -123,10 +123,10 @@ class TokenNode;
     macro(parsical::parser::TRegexRepeatition)              \
     macro(parsical::parser::TRegexNeg)
 
-#define define_visitor_for_each(type)                       \
+#define define_visitor_visit(type)                          \
     virtual void visit(type *);
 
-#define define_visitor  ast_each(define_visitor_for_each)
+#define define_visitor  ast_each(define_visitor_visit)
 
 class Visitor
 {
