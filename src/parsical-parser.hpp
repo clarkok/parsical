@@ -46,6 +46,7 @@ class Rule_Rule2;
 class TokenRule;
 class TokenRule_Rule1;
 class TokenRule_Rule2;
+class TokenRule_Rule3;
 class SentenceRule;
 class SentenceDecl;
 class SentenceBranch;
@@ -91,6 +92,7 @@ class TokenNode;
     macro(parsical::parser::TokenRule)                      \
     macro(parsical::parser::TokenRule_Rule1)                \
     macro(parsical::parser::TokenRule_Rule2)                \
+    macro(parsical::parser::TokenRule_Rule3)                \
     macro(parsical::parser::SentenceRule)                   \
     macro(parsical::parser::SentenceDecl)                   \
     macro(parsical::parser::SentenceBranch)                 \
@@ -886,6 +888,27 @@ public:
     virtual int
     getRule() const
     { return 2; }
+
+    virtual void
+    accept(Visitor *v)
+    { v->visit(this); }
+};
+
+class TokenRule_Rule3 : public TokenRule
+{
+public:
+    std::unique_ptr<TId>    id;
+    std::unique_ptr<TRegex> regex;
+
+    TokenRule_Rule3(Location location, TId *id, TRegex *regex)
+        : TokenRule(location), id(id), regex(regex)
+    { }
+
+    virtual ~TokenRule_Rule3() = default;
+
+    virtual int
+    getRule() const
+    { return 3; }
 
     virtual void
     accept(Visitor *v)

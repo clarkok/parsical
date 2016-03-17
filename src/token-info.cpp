@@ -6,6 +6,8 @@
 
 using namespace parsical;
 
+const int TokenInfoVisitor::TOKEN_START;
+
 char
 TokenInfoVisitor::recoverNonTransChar(parser::TStringNonTransChar *node)
 { return node->literal[0]; }
@@ -70,16 +72,35 @@ TokenInfoVisitor::recoverString(parser::TString *node)
 }
 
 std::string
+TokenInfoVisitor::stringTransCharToString(parser::TStringTransChar *node)
+{ return node->literal; }
+
+std::string
+TokenInfoVisitor::stringNonTransCharToString(parser::TStringNonTransChar *node)
+{ return node->literal; }
+
+std::string
+TokenInfoVisitor::stringCharToString(parser::TStringChar *node)
+{
+    if (node->string_non_trans_char) {
+        return stringNonTransCharToString(node->string_non_trans_char.get());
+    }
+    else {
+        return stringTransCharToString(node->string_trans_char.get());
+    }
+}
+
+std::string
 TokenInfoVisitor::regexRangeToString(parser::TRegexRange *node)
 {
     assert(node->getRule() > 0);
     assert(node->getRule() < 3);
     switch (node->getRule()) {
-        case 1: return std::string() + recoverChar(
+        case 1: return stringCharToString(
                         dynamic_cast<parser::TRegexRange_Rule1*>(node)->string_char.get());
-        case 2: return std::string() + recoverChar(
+        case 2: return stringCharToString(
                     dynamic_cast<parser::TRegexRange_Rule2*>(node)->string_char_1.get()) + '-'
-                    + recoverChar(
+                    + stringCharToString(
                     dynamic_cast<parser::TRegexRange_Rule2*>(node)->string_char_2.get());
         default: assert(false);
     }
@@ -93,7 +114,7 @@ TokenInfoVisitor::regexUnaryToString(parser::TRegexUnary *node)
     assert(node->getRule() > 0);
     assert(node->getRule() < 4);
     switch (node->getRule()) {
-        case 1: return std::string() + recoverChar(
+        case 1: return std::string() + stringCharToString(
                         dynamic_cast<parser::TRegexUnary_Rule1*>(node)->string_char.get());
         case 2: return std::string("(") + regexContentToString(
                         dynamic_cast<parser::TRegexUnary_Rule2*>(node)->regex_content.get())
@@ -151,18 +172,7 @@ TokenInfoVisitor::regexToString(parser::TRegex *node)
 
 void
 TokenInfoVisitor::visit(parser::TokenRule_Rule1 *node)
-{ _regex_token_table.emplace_back(node->id->literal, node->regex.get()); }
-
-void
-TokenInfoVisitor::visit(parser::TString *node)
-{
-    std::string original = recoverString(node);
-
-    if (_string_literal_map.find(original) == _string_literal_map.end()) {
-        _string_literal_map[original] = _string_token_table.size();
-        _string_token_table.emplace_back("T__" + std::to_string(_annoymous_counter++), node);
-    }
-}
+{ _regex_token_table.emplace_back((node->id->literal == "_" ? "_WHITE" : node->id->literal), node->regex.get()); }
 
 std::unique_ptr<FA>
 TokenInfoVisitor::lexerFA()
@@ -171,31 +181,17 @@ TokenInfoVisitor::lexerFA()
 
     fa->createState();  // start state is always 0
 
-    int accept = 0;
-    for (auto token : _string_token_table) {
-        insertStringIntoFa(fa.get(), token.string, accept++);
-    }
+    int accept = TOKEN_START;
 
     for (auto token : _regex_token_table) {
         insertRegexIntoFa(fa.get(), token.regex, accept++);
     }
 
-    return fa;
-}
-
-int
-TokenInfoVisitor::insertStringIntoFa(FA *fa, parser::TString *string, int accept)
-{
-    int state = 0;
-
-    for (auto &rep : string->string_rep_1) {
-        int new_state = fa->createState();
-        fa->addLink(new_state, state, recoverChar(rep.get()));
-        state = new_state;
+    for (int i = 1; i < 256; ++i) {
+        fa->addLink(fa->createState(i), 0, i);
     }
 
-    fa->getState(state).accept = accept;
-    return state;
+    return fa;
 }
 
 int
@@ -212,11 +208,11 @@ TokenInfoVisitor::insertRegexContentIntoFa(FA *fa, parser::TRegexContent *regex_
     int accept_state = fa->createState();
 
     int state = insertRegexBranchIntoFa(fa, regex_content->regex_branch.get(), start);
-    fa->addLink(accept_state, state, FA::ANY_LINK);
+    fa->addLink(accept_state, state, FA::EMPTY_LINK);
 
     for (auto &rep : regex_content->regex_content_rep_1) {
         state = insertRegexBranchIntoFa(fa, rep.regex_branch.get(), start);
-        fa->addLink(accept_state, state, FA::ANY_LINK);
+        fa->addLink(accept_state, state, FA::EMPTY_LINK);
     }
 
     return accept_state;
@@ -234,26 +230,32 @@ TokenInfoVisitor::insertRegexBranchIntoFa(FA *fa, parser::TRegexBranch *regex_br
 int
 TokenInfoVisitor::insertRegexPartIntoFa(FA *fa, parser::TRegexPart *regex_part, int start)
 {
-    int accept_state = insertRegexUnaryIntoFa(fa, regex_part->regex_unary.get(), start);
+    int unary_start = fa->createState();
+    fa->addLink(unary_start, start, FA::EMPTY_LINK);
+    int unary_accept = insertRegexUnaryIntoFa(fa, regex_part->regex_unary.get(), unary_start);
+    int accept;
     if (regex_part->regex_repeatition_opt) {
         if (regex_part->regex_repeatition_opt->literal == "*") {
-            int new_state = fa->createState();
-            fa->addLink(start, accept_state, FA::ANY_LINK);
-            fa->addLink(new_state, start, FA::ANY_LINK);
-            return new_state;
+            accept = fa->createState();
+            fa->addLink(unary_start, unary_accept, FA::EMPTY_LINK);
+            fa->addLink(accept, start, FA::EMPTY_LINK);
+            fa->addLink(accept, unary_accept, FA::EMPTY_LINK);
         }
         else if (regex_part->regex_repeatition_opt->literal == "+") {
-            fa->addLink(start, accept_state, FA::ANY_LINK);
-            return accept_state;
+            accept = fa->createState();
+            unary_start = unary_accept;
+            unary_accept = insertRegexUnaryIntoFa(fa, regex_part->regex_unary.get(), unary_start);
+            fa->addLink(unary_start, unary_accept, FA::EMPTY_LINK);
+            fa->addLink(accept, unary_accept, FA::EMPTY_LINK);
         }
-        else {
-            // ?
-            fa->addLink(accept_state, start, FA::ANY_LINK);
-            return accept_state;
+        else { // ?
+            accept = fa->createState();
+            fa->addLink(accept, start, FA::EMPTY_LINK);
         }
+        return accept;
     }
     else {
-        return accept_state;
+        return unary_accept;
     }
 }
 

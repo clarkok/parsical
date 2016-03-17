@@ -50,9 +50,9 @@ STRING = "\""! STRING_CHAR+ "\""!;
 
 STRING_CHAR = STRING_NON_TRANS_CHAR | STRING_TRANS_CHAR;
 
-STRING_NON_TRANS_CHAR = /[^\\"]/;
+~STRING_NON_TRANS_CHAR = /[^\\"]/;
 
-STRING_TRANS_CHAR = /\\([abfnrtv\\'"?]|[0-7][0-7][0-7]|x[0-9a-fA-F][0-9a-fA-F])/;
+~STRING_TRANS_CHAR = /\\([abfnrtv\\'"?]|[0-7][0-7][0-7]|x[0-9a-fA-F][0-9a-fA-F])/;
 
 REGEX = "/"! REGEX_CONTENT "/"!;
 
@@ -64,9 +64,9 @@ REGEX_PART = REGEX_UNARY REGEX_REPEATITION? ;
 
 REGEX_UNARY = STRING_CHAR | "("! REGEX_CONTENT ")"! | "["! REGEX_NEG? REGEX_RANGE+ "]"!;
 
-REGEX_REPEATITION = /[*+?]/;
+~REGEX_REPEATITION = /[*+?]/;
 
-REGEX_NEG = /^/;
+~REGEX_NEG = /^/;
 
 REGEX_RANGE = STRING_CHAR | STRING_CHAR "-"! STRING_CHAR;
 

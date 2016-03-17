@@ -71,6 +71,13 @@ Visitor::visit(TokenRule_Rule2 *node)
 }
 
 void
+Visitor::visit(TokenRule_Rule3 *node)
+{
+    node->id->accept(this);
+    node->regex->accept(this);
+}
+
+void
 Visitor::visit(TokenRule *node)
 {
     switch (node->getRule()) {

@@ -14,7 +14,7 @@ class FA
 {
 public:
     typedef unsigned int state_id_t;
-    static const int ANY_LINK = -1;
+    static const int EMPTY_LINK = -1;
 
     struct Link
     {

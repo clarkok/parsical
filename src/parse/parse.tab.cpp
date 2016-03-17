@@ -385,18 +385,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  7
+#define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   37
+#define YYLAST   49
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  16
+#define YYNTOKENS  17
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  14
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  26
+#define YYNRULES  27
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  36
+#define YYNSTATES  40
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -413,16 +413,16 @@ static const yytype_uint8 yytranslate[] =
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,    12,     2,     2,     2,     2,     2,     2,
-      10,    11,    13,    14,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     8,     6,
-       2,     7,     2,    15,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,    13,     2,     2,     2,     2,     2,     2,
+      11,    12,    14,    15,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     9,     6,
+       2,     7,     2,    16,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     9,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,    10,     2,     8,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -443,9 +443,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    32,    32,    42,    55,    59,    66,    70,    77,    84,
-      92,    99,   105,   114,   123,   132,   141,   153,   157,   161,
-     168,   181,   191,   201,   214,   224,   231
+       0,    32,    32,    42,    55,    59,    66,    70,    74,    81,
+      88,    96,   103,   109,   118,   127,   136,   145,   157,   161,
+     165,   172,   185,   195,   205,   218,   228,   235
 };
 #endif
 
@@ -455,7 +455,7 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "ID", "STRING", "REGEX", "';'", "'='",
-  "':'", "'|'", "'('", "')'", "'!'", "'*'", "'+'", "'?'", "$accept",
+  "'~'", "':'", "'|'", "'('", "')'", "'!'", "'*'", "'+'", "'?'", "$accept",
   "grammar", "rule", "token_rule", "sentence_rule", "sentence_decl",
   "sentence_branch", "sentence_part", "sentence_unary",
   "sentence_decorate", "sentence_repeatition", "id", "string", "regex", YY_NULLPTR
@@ -467,15 +467,15 @@ static const char *const yytname[] =
    (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_uint16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,   260,    59,    61,    58,   124,
-      40,    41,    33,    42,    43,    63
+       0,   256,   257,   258,   259,   260,    59,    61,   126,    58,
+     124,    40,    41,    33,    42,    43,    63
 };
 # endif
 
-#define YYPACT_NINF -18
+#define YYPACT_NINF -21
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-18)))
+  (!!((Yystate) == (-21)))
 
 #define YYTABLE_NINF -1
 
@@ -486,10 +486,10 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      15,   -18,     5,   -18,    24,    25,    13,   -18,   -18,   -18,
-     -18,     9,    12,   -18,   -18,    12,    23,    12,   -18,    11,
-     -18,   -18,   -18,    23,    -1,    12,   -18,   -18,   -18,   -18,
-     -18,    14,   -18,   -18,    12,   -18
+       1,   -21,    26,    14,   -21,    27,    29,    25,    30,   -21,
+     -21,   -21,   -21,     2,    12,    31,   -21,   -21,    12,    32,
+      12,   -21,    11,   -21,   -21,   -21,    32,   -21,    -1,    12,
+     -21,   -21,   -21,   -21,   -21,     5,   -21,   -21,    12,   -21
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -497,24 +497,24 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    24,     0,     3,     0,     0,     0,     1,     2,     4,
-       5,     0,     0,    25,    26,     0,     7,    10,    12,    16,
-      17,    18,     6,     8,     0,     0,    11,    20,    21,    22,
-      23,    15,    14,    19,     9,    13
+       0,    25,     0,     0,     3,     0,     0,     0,     0,     1,
+       2,     4,     5,     0,     0,     0,    26,    27,     0,     7,
+      11,    13,    17,    18,    19,     6,     9,     8,     0,     0,
+      12,    21,    22,    23,    24,    16,    15,    20,    10,    14
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -18,   -18,    31,   -18,   -18,    22,   -14,   -17,   -18,   -18,
-       6,     4,   -18,   -18
+     -21,   -21,    35,   -21,   -21,    33,   -17,   -20,   -21,   -21,
+       4,    28,   -21,    34
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     3,     4,     5,    16,    17,    18,    19,    31,
-      32,    20,    21,    22
+      -1,     3,     4,     5,     6,    19,    20,    21,    22,    35,
+      36,    23,    24,    25
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -522,44 +522,46 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      26,    24,     1,    13,     6,     7,     6,    26,     1,    15,
-      33,    34,     1,    13,    14,     1,    13,    26,     1,    15,
-      11,    12,    15,    27,    28,    29,    30,    28,    29,    30,
-       9,    10,    25,     8,    23,     0,     0,    35
+      30,    28,     1,    16,     1,     1,    16,    17,    30,     2,
+      18,    37,    38,    18,     9,     1,    16,     1,    30,    32,
+      33,    34,     2,    18,    31,    32,    33,    34,     7,     1,
+       8,     7,    13,    11,    14,    12,    17,    15,    10,    39,
+       0,     0,    29,     0,     0,     0,     0,    26,     0,    27
 };
 
 static const yytype_int8 yycheck[] =
 {
-      17,    15,     3,     4,     0,     0,     2,    24,     3,    10,
-      11,    25,     3,     4,     5,     3,     4,    34,     3,    10,
-       7,     8,    10,    12,    13,    14,    15,    13,    14,    15,
-       6,     6,     9,     2,    12,    -1,    -1,    31
+      20,    18,     3,     4,     3,     3,     4,     5,    28,     8,
+      11,    12,    29,    11,     0,     3,     4,     3,    38,    14,
+      15,    16,     8,    11,    13,    14,    15,    16,     0,     3,
+       2,     3,     7,     6,     9,     6,     5,     7,     3,    35,
+      -1,    -1,    10,    -1,    -1,    -1,    -1,    14,    -1,    15
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,    17,    18,    19,    20,    27,     0,    18,     6,
-       6,     7,     8,     4,     5,    10,    21,    22,    23,    24,
-      27,    28,    29,    21,    22,     9,    23,    12,    13,    14,
-      15,    25,    26,    11,    22,    26
+       0,     3,     8,    18,    19,    20,    21,    28,    28,     0,
+      19,     6,     6,     7,     9,     7,     4,     5,    11,    22,
+      23,    24,    25,    28,    29,    30,    22,    30,    23,    10,
+      24,    13,    14,    15,    16,    26,    27,    12,    23,    27
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    16,    17,    17,    18,    18,    19,    19,    20,    21,
-      21,    22,    22,    23,    23,    23,    23,    24,    24,    24,
-      25,    26,    26,    26,    27,    28,    29
+       0,    17,    18,    18,    19,    19,    20,    20,    20,    21,
+      22,    22,    23,    23,    24,    24,    24,    24,    25,    25,
+      25,    26,    27,    27,    27,    28,    29,    30
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     1,     2,     2,     3,     3,     3,     3,
-       1,     2,     1,     3,     2,     2,     1,     1,     1,     3,
-       1,     1,     1,     1,     1,     1,     1
+       0,     2,     2,     1,     2,     2,     3,     3,     4,     3,
+       3,     1,     2,     1,     3,     2,     2,     1,     1,     1,
+       3,     1,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1246,7 +1248,7 @@ yyreduce:
 
             result = dynamic_cast<Grammar*>((yyval.node));
         }
-#line 1250 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1252 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
@@ -1260,7 +1262,7 @@ yyreduce:
 
             result = dynamic_cast<Grammar*>((yyval.node));
         }
-#line 1264 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1266 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
@@ -1268,7 +1270,7 @@ yyreduce:
     {
             (yyval.node) = new Rule_Rule1(_current_location, dynamic_cast<TokenRule*>((yyvsp[-1].node)));
         }
-#line 1272 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1274 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
@@ -1276,7 +1278,7 @@ yyreduce:
     {
             (yyval.node) = new Rule_Rule2(_current_location, dynamic_cast<SentenceRule*>((yyvsp[-1].node)));
         }
-#line 1280 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1282 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
@@ -1284,7 +1286,7 @@ yyreduce:
     {
             (yyval.node) = new TokenRule_Rule1(_current_location, dynamic_cast<TId*>((yyvsp[-2].node)), dynamic_cast<TRegex*>((yyvsp[0].node)));
         }
-#line 1288 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1290 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
@@ -1292,19 +1294,27 @@ yyreduce:
     {
             (yyval.node) = new TokenRule_Rule2(_current_location, dynamic_cast<TId*>((yyvsp[-2].node)), dynamic_cast<SentenceDecl*>((yyvsp[0].node)));
         }
-#line 1296 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1298 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 78 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+#line 75 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
-            (yyval.node) = new SentenceRule(_current_location, dynamic_cast<TId*>((yyvsp[-2].node)), dynamic_cast<SentenceDecl*>((yyvsp[0].node)));
+            (yyval.node) = new TokenRule_Rule3(_current_location, dynamic_cast<TId*>((yyvsp[-2].node)), dynamic_cast<TRegex*>((yyvsp[0].node)));
         }
-#line 1304 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1306 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 85 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+#line 82 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+    {
+            (yyval.node) = new SentenceRule(_current_location, dynamic_cast<TId*>((yyvsp[-2].node)), dynamic_cast<SentenceDecl*>((yyvsp[0].node)));
+        }
+#line 1314 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 10:
+#line 89 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             auto *sentence_decl = dynamic_cast<SentenceDecl*>((yyvsp[-2].node));
             SentenceDecl::SentenceDeclRep1 rep;
@@ -1312,31 +1322,21 @@ yyreduce:
             sentence_decl->sentence_decl_rep_1.emplace_back(std::move(rep));
             (yyval.node) = sentence_decl;
         }
-#line 1316 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 93 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
-    {
-            (yyval.node) = new SentenceDecl(_current_location, dynamic_cast<SentenceBranch*>((yyvsp[0].node)));
-        }
-#line 1324 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1326 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 100 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+#line 97 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
-            auto *sentence_branch = dynamic_cast<SentenceBranch*>((yyvsp[-1].node));
-            sentence_branch->sentence_part_rep.emplace_back(dynamic_cast<SentencePart*>((yyvsp[0].node)));
-            (yyval.node) = sentence_branch;
+            (yyval.node) = new SentenceDecl(_current_location, dynamic_cast<SentenceBranch*>((yyvsp[0].node)));
         }
 #line 1334 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 106 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+#line 104 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
-            auto *sentence_branch = new SentenceBranch(_current_location);
+            auto *sentence_branch = dynamic_cast<SentenceBranch*>((yyvsp[-1].node));
             sentence_branch->sentence_part_rep.emplace_back(dynamic_cast<SentencePart*>((yyvsp[0].node)));
             (yyval.node) = sentence_branch;
         }
@@ -1344,7 +1344,17 @@ yyreduce:
     break;
 
   case 13:
-#line 115 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+#line 110 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+    {
+            auto *sentence_branch = new SentenceBranch(_current_location);
+            sentence_branch->sentence_part_rep.emplace_back(dynamic_cast<SentencePart*>((yyvsp[0].node)));
+            (yyval.node) = sentence_branch;
+        }
+#line 1354 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 14:
+#line 119 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = new SentencePart(
                 _current_location,
@@ -1353,11 +1363,11 @@ yyreduce:
                 dynamic_cast<SentenceRepeatition*>((yyvsp[0].node))
             );
         }
-#line 1357 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1367 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 14:
-#line 124 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+  case 15:
+#line 128 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = new SentencePart(
                 _current_location,
@@ -1366,11 +1376,11 @@ yyreduce:
                 dynamic_cast<SentenceRepeatition*>((yyvsp[0].node))
             );
         }
-#line 1370 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1380 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 15:
-#line 133 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+  case 16:
+#line 137 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = new SentencePart(
                 _current_location,
@@ -1379,11 +1389,11 @@ yyreduce:
                 nullptr
             );
         }
-#line 1383 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1393 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 16:
-#line 142 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+  case 17:
+#line 146 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = new SentencePart(
                 _current_location,
@@ -1392,35 +1402,35 @@ yyreduce:
                 nullptr
             );
         }
-#line 1396 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 17:
-#line 154 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
-    {
-            (yyval.node) = new SentenceUnary_Rule1(_current_location, dynamic_cast<TId*>((yyvsp[0].node)));
-        }
-#line 1404 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1406 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 158 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
-            (yyval.node) = new SentenceUnary_Rule2(_current_location, dynamic_cast<TString*>((yyvsp[0].node)));
+            (yyval.node) = new SentenceUnary_Rule1(_current_location, dynamic_cast<TId*>((yyvsp[0].node)));
         }
-#line 1412 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1414 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 162 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
-            (yyval.node) = new SentenceUnary_Rule3(_current_location, dynamic_cast<SentenceBranch*>((yyvsp[-1].node)));
+            (yyval.node) = new SentenceUnary_Rule2(_current_location, dynamic_cast<TString*>((yyvsp[0].node)));
         }
-#line 1420 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1422 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 169 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+#line 166 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+    {
+            (yyval.node) = new SentenceUnary_Rule3(_current_location, dynamic_cast<SentenceBranch*>((yyvsp[-1].node)));
+        }
+#line 1430 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 173 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = new SentenceDecorate(
                     _current_location,
@@ -1430,11 +1440,11 @@ yyreduce:
                     )
                 );
         }
-#line 1434 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1444 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 21:
-#line 182 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+  case 22:
+#line 186 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = new SentenceRepeatition_Rule1(
                     _current_location,
@@ -1444,11 +1454,11 @@ yyreduce:
                     )
                 );
         }
-#line 1448 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1458 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 22:
-#line 192 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+  case 23:
+#line 196 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = new SentenceRepeatition_Rule2(
                     _current_location,
@@ -1458,11 +1468,11 @@ yyreduce:
                     )
                 );
         }
-#line 1462 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1472 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 23:
-#line 202 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+  case 24:
+#line 206 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = new SentenceRepeatition_Rule3(
                     _current_location,
@@ -1472,38 +1482,38 @@ yyreduce:
                     )
                 );
         }
-#line 1476 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1486 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 24:
-#line 215 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+  case 25:
+#line 219 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = new TId(
                 _current_location,
                 (yyvsp[0].literal)
             );
         }
-#line 1487 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 25:
-#line 225 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
-    {
-            (yyval.node) = parse_string(_current_location, (yyvsp[0].literal));
-        }
-#line 1495 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1497 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 232 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+#line 229 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
+    {
+            (yyval.node) = parse_string(_current_location, (yyvsp[0].literal));
+        }
+#line 1505 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 27:
+#line 236 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1646  */
     {
             (yyval.node) = parse_regex(_current_location, (yyvsp[0].literal));
         }
-#line 1503 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1513 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1507 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
+#line 1517 "/home/c/c-stack/parsical/src/parse/parse.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1731,7 +1741,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 236 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1906  */
+#line 240 "/home/c/c-stack/parsical/src/parse/parse.y" /* yacc.c:1906  */
 
 int yyerror(const char *msg)
 {

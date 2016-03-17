@@ -33,22 +33,21 @@ struct RegexToken
 
 class TokenInfoVisitor : public parser::Visitor
 {
-    std::vector<StringToken>    _string_token_table;
-    std::map<std::string, int>  _string_literal_map;
     std::vector<RegexToken>     _regex_token_table;
-    int _annoymous_counter;
 
     static char recoverNonTransChar(parser::TStringNonTransChar *node);
     static char recoverTransChar(parser::TStringTransChar *node);
     static char recoverChar(parser::TStringChar *node);
 
+    static std::string stringTransCharToString(parser::TStringTransChar *node);
+    static std::string stringNonTransCharToString(parser::TStringNonTransChar *node);
+    static std::string stringCharToString(parser::TStringChar *node);
     static std::string regexRangeToString(parser::TRegexRange *node);
     static std::string regexUnaryToString(parser::TRegexUnary *node);
     static std::string regexPartToString(parser::TRegexPart *node);
     static std::string regexBranchToString(parser::TRegexBranch *node);
     static std::string regexContentToString(parser::TRegexContent *node);
 
-    int insertStringIntoFa(FA* fa, parser::TString *string, int accept);
     int insertRegexIntoFa(FA *fa, parser::TRegex *regex, int accept);
 
     int insertRegexContentIntoFa(FA *fa, parser::TRegexContent *regex_content, int start);
@@ -60,25 +59,18 @@ public:
     static std::string recoverString(parser::TString *node);
     static std::string regexToString(parser::TRegex *node);
 
-    TokenInfoVisitor()
-        : _annoymous_counter(0)
-    { }
+    static const int TOKEN_START = 256;
+
+    TokenInfoVisitor() = default;
 
     virtual ~TokenInfoVisitor() = default;
 
     define_visitor_visit(parser::TokenRule_Rule1)
-    define_visitor_visit(parser::TString)
 
-    auto stringBegin() -> decltype(TokenInfoVisitor::_string_token_table.begin())
-    { return _string_token_table.begin(); }
-
-    auto stringEnd() -> decltype(TokenInfoVisitor::_string_token_table.end())
-    { return _string_token_table.end(); }
-
-    auto regexBegin() -> decltype(TokenInfoVisitor::_regex_token_table.begin())
+    auto begin() -> decltype(TokenInfoVisitor::_regex_token_table.begin())
     { return _regex_token_table.begin(); }
 
-    auto regexEnd() -> decltype(TokenInfoVisitor::_regex_token_table.end())
+    auto end() -> decltype(TokenInfoVisitor::_regex_token_table.end())
     { return _regex_token_table.end(); }
 
     std::unique_ptr<FA> lexerFA();

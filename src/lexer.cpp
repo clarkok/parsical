@@ -5,22 +5,17 @@ using namespace parsical;
 void
 Lexer::outputTokenEnum(std::ostream &_os)
 {
-    auto string_iter = _token_info.stringBegin(),
-         string_limit = _token_info.stringEnd();
+    auto regex_iter = _token_info.begin(),
+         regex_limit = _token_info.end();
 
-    _os << "\t" << string_iter->name << "\t// " << TokenInfoVisitor::recoverString(string_iter->string);
-    ++string_iter;
+    _os << "\t" << regex_iter->name << " = " << TokenInfoVisitor::TOKEN_START
+        << "\t/* " << TokenInfoVisitor::regexToString(regex_iter->regex) << " */";
 
-    while (string_iter != string_limit) {
-        _os << "," << std::endl << "\t" << string_iter->name << "\t// " << TokenInfoVisitor::recoverString(string_iter->string);
-        ++string_iter;
-    }
-
-    auto regex_iter = _token_info.regexBegin(),
-         regex_limit = _token_info.regexEnd();
+    ++regex_iter;
 
     while (regex_iter != regex_limit) {
-        _os << "," << std::endl << "\t" << regex_iter->name << "\t// " << TokenInfoVisitor::regexToString(regex_iter->regex);
+        _os << "," << std::endl << "\t" << regex_iter->name << "\t/* " 
+            << TokenInfoVisitor::regexToString(regex_iter->regex) << " */";
         ++regex_iter;
     }
 }

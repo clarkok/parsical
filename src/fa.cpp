@@ -4,7 +4,7 @@
 
 using namespace parsical;
 
-const int FA::ANY_LINK;
+const int FA::EMPTY_LINK;
 
 FA::StateSet
 FA::getClosure(state_id_t state, int ch)
@@ -13,7 +13,7 @@ FA::getClosure(state_id_t state, int ch)
     std::queue<state_id_t> q;
     auto &st = getState(state);
 
-    if (ch != ANY_LINK) {
+    if (ch != EMPTY_LINK) {
         for (auto iter = st.links.lower_bound(ch), limit = st.links.upper_bound(ch); iter != limit; ++iter) {
             ret.insert(iter->second);
             q.push(iter->second);
@@ -26,7 +26,7 @@ FA::getClosure(state_id_t state, int ch)
 
     while (!q.empty()) {
         auto &st = getState(q.front()); q.pop();
-        for (auto iter = st.links.lower_bound(ANY_LINK), limit = st.links.upper_bound(ANY_LINK); iter != limit; ++iter) {
+        for (auto iter = st.links.lower_bound(EMPTY_LINK), limit = st.links.upper_bound(EMPTY_LINK); iter != limit; ++iter) {
             if (!ret.hasState(iter->second)) {
                 ret.insert(iter->second);
                 q.push(iter->second);
@@ -43,7 +43,7 @@ FA::nfa2dfa()
     std::unique_ptr<FA> fa(new FA());
     std::map<StateSet, state_id_t> state_map;
 
-    StateSet initial = getClosure(0, ANY_LINK);
+    StateSet initial = getClosure(0, EMPTY_LINK);
     state_map[initial] = fa->createState();
     for (auto &st : initial) {
         if (getState(st).accept) {

@@ -1,0 +1,75 @@
+#include <string>
+
+enum TokenType
+{
+#include "output.token"
+};
+
+class Lexer
+{
+    int _next_token;
+    std::string _content;
+    std::string::iterator _iter;
+
+    std::string _token;
+    int _line;
+    int _column;
+public:
+    Lexer(std::string content)
+        : _content(content), _iter(_content.begin()), _token(""), _line(1), _column(1)
+    { }
+
+    inline int peek()
+    { return _next_token; }
+
+    inline int line() const
+    { return _line; }
+
+    inline int column() const
+    { return _column; }
+
+    inline std::string token() const
+    { return _token; }
+
+    void next()
+    {
+#include "output.table"
+
+        int state = 0;
+        auto begin = _iter;
+        auto latest_success = _iter + 1;
+
+        _next_token = -1;
+
+        if (_iter == _content.end()) {
+            _next_token = 0;
+            return;
+        }
+
+        while (_iter != _content.end() && next_state[state][(int)*_iter] != -1) {
+            if (*_iter == '\n') {
+                ++_line; _column = 1;
+            }
+            else {
+                ++_column;
+            }
+
+            if (accept_state[state] != -1) {
+                _next_token = accept_state[state];
+                latest_success = _iter + 1;
+                _token = std::string(begin, latest_success);
+            }
+
+            state = next_state[state][(int)*_iter++];
+        }
+
+        if (accept_state[state] != -1) {
+            _next_token = accept_state[state];
+            latest_success = _iter;
+            _token = std::string(begin, _iter);
+        }
+        else {
+            _iter = latest_success;
+        }
+    }
+};
