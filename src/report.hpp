@@ -20,7 +20,13 @@ public:
     static std::string positionedMessage(
             parser::Location &loc,
             std::string msg,
-            std::string info);
+            std::string info
+        );
+
+    static std::string positionedMessage(
+            parser::Location &loc,
+            std::string msg
+        );
 
     static std::string locationToString(parser::Location &loc);
 

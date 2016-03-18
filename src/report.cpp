@@ -26,6 +26,12 @@ Report::positionedMessage(parser::Location &loc, std::string msg, std::string in
 }
 
 std::string
+Report::positionedMessage(parser::Location &loc, std::string msg)
+{
+    return locationToString(loc) + "\t" + msg + "\n";
+}
+
+std::string
 Report::locationToString(parser::Location &loc)
 { return loc.file + " " + std::to_string(loc.line) + ":" + std::to_string(loc.column); }
 

@@ -16,6 +16,17 @@ SymbolInfoVisitor::reportDuplicated(parser::TId *met, parser::TreeNode *prev)
 }
 
 void
+SymbolInfoVisitor::reportMissing(parser::TId *met)
+{
+    Report::getReport().error(
+            Report::positionedMessage(
+                met->location,
+                "met undefined symbol: `" + met->literal + "\'"
+            )
+        );
+}
+
+void
 SymbolInfoVisitor::visit(parser::TokenRule_Rule1 *node)
 {
     if (_symbol_table.find(node->id->literal) != _symbol_table.end()) {

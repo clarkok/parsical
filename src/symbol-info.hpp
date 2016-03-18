@@ -18,7 +18,7 @@ public:
     virtual ~SymbolInfoVisitor() = default;
 
     static void reportDuplicated(parser::TId *met, parser::TreeNode *prev);
-    static void reportMissing(parser::TreeNode *met);
+    static void reportMissing(parser::TId *met);
 
     define_visitor_visit(parser::TokenRule_Rule1)
     define_visitor_visit(parser::TokenRule_Rule2)
