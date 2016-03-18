@@ -37,7 +37,7 @@ public:
 
         int state = 0;
         auto begin = _iter;
-        auto latest_success = _iter + 1;
+        auto latest_success = _iter;
 
         _next_token = -1;
 

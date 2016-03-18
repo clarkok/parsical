@@ -90,6 +90,23 @@ Visitor::visit(TokenRule *node)
 void
 Visitor::visit(SentenceRule *node)
 {
+    switch (node->getRule()) {
+        case 1: dynamic_cast<SentenceRule_Rule1*>(node)->accept(this); break;
+        case 2: dynamic_cast<SentenceRule_Rule2*>(node)->accept(this); break;
+        default: assert(false);
+    }
+}
+
+void
+Visitor::visit(SentenceRule_Rule1 *node)
+{
+    node->id->accept(this);
+    node->sentence_decl->accept(this);
+}
+
+void
+Visitor::visit(SentenceRule_Rule2 *node)
+{
     node->id->accept(this);
     node->sentence_decl->accept(this);
 }

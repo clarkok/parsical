@@ -48,6 +48,8 @@ class TokenRule_Rule1;
 class TokenRule_Rule2;
 class TokenRule_Rule3;
 class SentenceRule;
+class SentenceRule_Rule1;
+class SentenceRule_Rule2;
 class SentenceDecl;
 class SentenceBranch;
 class SentencePart;
@@ -94,6 +96,8 @@ class TokenNode;
     macro(parsical::parser::TokenRule_Rule2)                \
     macro(parsical::parser::TokenRule_Rule3)                \
     macro(parsical::parser::SentenceRule)                   \
+    macro(parsical::parser::SentenceRule_Rule1)             \
+    macro(parsical::parser::SentenceRule_Rule2)             \
     macro(parsical::parser::SentenceDecl)                   \
     macro(parsical::parser::SentenceBranch)                 \
     macro(parsical::parser::SentencePart)                   \
@@ -812,11 +816,8 @@ public:
 class SentenceRule : public TreeNode
 {
 public:
-    std::unique_ptr<TId>    id;
-    std::unique_ptr<SentenceDecl>   sentence_decl;
-
-    SentenceRule(Location location, TId *id, SentenceDecl *sentence_decl)
-        : TreeNode(location), id(id), sentence_decl(sentence_decl)
+    SentenceRule(Location location)
+        : TreeNode(location)
     { }
 
     virtual ~SentenceRule() = default;
@@ -824,6 +825,60 @@ public:
     virtual int
     getType() const
     { return N_sentence_rule; }
+
+    virtual int
+    getRule() const
+    { return 0; }
+
+    virtual void
+    accept(Visitor *v)
+    { v->visit(this); }
+};
+
+class SentenceRule_Rule1 : public SentenceRule
+{
+public:
+    std::unique_ptr<TId>    id;
+    std::unique_ptr<SentenceDecl>   sentence_decl;
+
+    SentenceRule_Rule1(Location location, TId *id, SentenceDecl *sentence_decl)
+        : SentenceRule(location), id(id), sentence_decl(sentence_decl)
+    { }
+
+    virtual ~SentenceRule_Rule1() = default;
+
+    virtual int
+    getType() const
+    { return N_sentence_rule; }
+
+    virtual int
+    getRule() const
+    { return 1; }
+
+    virtual void
+    accept(Visitor *v)
+    { v->visit(this); }
+};
+
+class SentenceRule_Rule2 : public SentenceRule
+{
+public:
+    std::unique_ptr<TId>    id;
+    std::unique_ptr<SentenceDecl>   sentence_decl;
+
+    SentenceRule_Rule2(Location location, TId *id, SentenceDecl *sentence_decl)
+        : SentenceRule(location), id(id), sentence_decl(sentence_decl)
+    { }
+
+    virtual ~SentenceRule_Rule2() = default;
+
+    virtual int
+    getType() const
+    { return N_sentence_rule; }
+
+    virtual int
+    getRule() const
+    { return 2; }
 
     virtual void
     accept(Visitor *v)

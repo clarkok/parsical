@@ -10,10 +10,12 @@ rule:
 token_rule:
       ID "="! REGEX
     | ID "="! sentence_decl
+    | "~"! ID "="! REGEX
     ;
 
 sentence_rule:
-    ID ":"! sentence_decl
+      ID ":"! sentence_decl
+    | "~"! ID ":"! sentence_decl
     ;
 
 sentence_decl:
