@@ -80,11 +80,7 @@ token_rule:
 sentence_rule:
       id ':' sentence_decl
         {
-            $$ = new SentenceRule_Rule1(_current_location, dynamic_cast<TId*>($1), dynamic_cast<SentenceDecl*>($3));
-        }
-    | '~' id '=' sentence_decl
-        {
-            $$ = new SentenceRule_Rule2(_current_location, dynamic_cast<TId*>($2), dynamic_cast<SentenceDecl*>($4));
+            $$ = new SentenceRule(_current_location, dynamic_cast<TId*>($1), dynamic_cast<SentenceDecl*>($3));
         }
     ;
 

@@ -15,7 +15,6 @@ token_rule:
 
 sentence_rule:
       ID ":"! sentence_decl
-    | "~"! ID ":"! sentence_decl
     ;
 
 sentence_decl:
@@ -48,28 +47,32 @@ sentence_repeatition:
 
 ID = /[a-zA-Z][_a-zA-Z0-9]*/;
 
-STRING = "\""! STRING_CHAR+ "\""!;
+STRING = /"([^\\"]|\\.)+"/;
 
-STRING_CHAR = STRING_NON_TRANS_CHAR | STRING_TRANS_CHAR;
+~STRING = "\""! STRING_CHAR+ "\""!;
+
+~STRING_CHAR = STRING_NON_TRANS_CHAR | STRING_TRANS_CHAR;
 
 ~STRING_NON_TRANS_CHAR = /[^\\"]/;
 
-~STRING_TRANS_CHAR = /\\([abfnrtv\\'"?]|[0-7][0-7][0-7]|x[0-9a-fA-F][0-9a-fA-F])/;
+~STRING_TRANS_CHAR = /\\([abfnrtv\\'"?\/]|[0-7][0-7][0-7]|x[0-9a-fA-F][0-9a-fA-F])/;
 
-REGEX = "/"! REGEX_CONTENT "/"!;
+REGEX = /\/([^\\\/]|\\\/)+\//;
 
-REGEX_CONTENT = REGEX_BRANCH ("|"! REGEX_BRANCH)*;
+~REGEX = "/"! REGEX_CONTENT "/"!;
 
-REGEX_BRANCH = REGEX_PART+ ;
+~REGEX_CONTENT = REGEX_BRANCH ("|"! REGEX_BRANCH)*;
 
-REGEX_PART = REGEX_UNARY REGEX_REPEATITION? ;
+~REGEX_BRANCH = REGEX_PART+ ;
 
-REGEX_UNARY = STRING_CHAR | "("! REGEX_CONTENT ")"! | "["! REGEX_NEG? REGEX_RANGE+ "]"!;
+~REGEX_PART = REGEX_UNARY REGEX_REPEATITION? ;
+
+~REGEX_UNARY = STRING_CHAR | "("! REGEX_CONTENT ")"! | "["! REGEX_NEG? REGEX_RANGE+ "]"!;
 
 ~REGEX_REPEATITION = /[*+?]/;
 
 ~REGEX_NEG = /^/;
 
-REGEX_RANGE = STRING_CHAR | STRING_CHAR "-"! STRING_CHAR;
+~REGEX_RANGE = STRING_CHAR | STRING_CHAR "-"! STRING_CHAR;
 
 _ = /[ \t\v\r\n]*/;

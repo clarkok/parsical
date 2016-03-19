@@ -13,54 +13,53 @@ Grammar
     7           | '~' id '=' regex
 
     8 sentence_rule: id ':' sentence_decl
-    9              | '~' id '=' sentence_decl
 
-   10 sentence_decl: sentence_decl '|' sentence_branch
-   11              | sentence_branch
+    9 sentence_decl: sentence_decl '|' sentence_branch
+   10              | sentence_branch
 
-   12 sentence_branch: sentence_branch sentence_part
-   13                | sentence_part
+   11 sentence_branch: sentence_branch sentence_part
+   12                | sentence_part
 
-   14 sentence_part: sentence_unary sentence_decorate sentence_repeatition
-   15              | sentence_unary sentence_repeatition
-   16              | sentence_unary sentence_decorate
-   17              | sentence_unary
+   13 sentence_part: sentence_unary sentence_decorate sentence_repeatition
+   14              | sentence_unary sentence_repeatition
+   15              | sentence_unary sentence_decorate
+   16              | sentence_unary
 
-   18 sentence_unary: id
-   19               | string
-   20               | '(' sentence_branch ')'
+   17 sentence_unary: id
+   18               | string
+   19               | '(' sentence_branch ')'
 
-   21 sentence_decorate: '!'
+   20 sentence_decorate: '!'
 
-   22 sentence_repeatition: '*'
-   23                     | '+'
-   24                     | '?'
+   21 sentence_repeatition: '*'
+   22                     | '+'
+   23                     | '?'
 
-   25 id: ID
+   24 id: ID
 
-   26 string: STRING
+   25 string: STRING
 
-   27 regex: REGEX
+   26 regex: REGEX
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-'!' (33) 21
-'(' (40) 20
-')' (41) 20
-'*' (42) 22
-'+' (43) 23
+'!' (33) 20
+'(' (40) 19
+')' (41) 19
+'*' (42) 21
+'+' (43) 22
 ':' (58) 8
 ';' (59) 3 4
-'=' (61) 5 6 7 9
-'?' (63) 24
-'|' (124) 10
-'~' (126) 7 9
+'=' (61) 5 6 7
+'?' (63) 23
+'|' (124) 9
+'~' (126) 7
 error (256)
-ID (258) 25
-STRING (259) 26
-REGEX (260) 27
+ID (258) 24
+STRING (259) 25
+REGEX (260) 26
 
 
 Nonterminals, with rules where they appear
@@ -74,25 +73,25 @@ rule (19)
 token_rule (20)
     on left: 5 6 7, on right: 3
 sentence_rule (21)
-    on left: 8 9, on right: 4
+    on left: 8, on right: 4
 sentence_decl (22)
-    on left: 10 11, on right: 6 8 9 10
+    on left: 9 10, on right: 6 8 9
 sentence_branch (23)
-    on left: 12 13, on right: 10 11 12 20
+    on left: 11 12, on right: 9 10 11 19
 sentence_part (24)
-    on left: 14 15 16 17, on right: 12 13
+    on left: 13 14 15 16, on right: 11 12
 sentence_unary (25)
-    on left: 18 19 20, on right: 14 15 16 17
+    on left: 17 18 19, on right: 13 14 15 16
 sentence_decorate (26)
-    on left: 21, on right: 14 16
+    on left: 20, on right: 13 15
 sentence_repeatition (27)
-    on left: 22 23 24, on right: 14 15
+    on left: 21 22 23, on right: 13 14
 id (28)
-    on left: 25, on right: 5 6 7 8 9 18
+    on left: 24, on right: 5 6 7 8 17
 string (29)
-    on left: 26, on right: 19
+    on left: 25, on right: 18
 regex (30)
-    on left: 27, on right: 5 7
+    on left: 26, on right: 5 7
 
 
 State 0
@@ -111,15 +110,14 @@ State 0
 
 State 1
 
-   25 id: ID .
+   24 id: ID .
 
-    $default  reduce using rule 25 (id)
+    $default  reduce using rule 24 (id)
 
 
 State 2
 
     7 token_rule: '~' . id '=' regex
-    9 sentence_rule: '~' . id '=' sentence_decl
 
     ID  shift, and go to state 1
 
@@ -175,7 +173,6 @@ State 7
 State 8
 
     7 token_rule: '~' id . '=' regex
-    9 sentence_rule: '~' id . '=' sentence_decl
 
     '='  shift, and go to state 15
 
@@ -246,45 +243,35 @@ State 14
 State 15
 
     7 token_rule: '~' id '=' . regex
-    9 sentence_rule: '~' id '=' . sentence_decl
 
-    ID      shift, and go to state 1
-    STRING  shift, and go to state 16
-    REGEX   shift, and go to state 17
-    '('     shift, and go to state 18
+    REGEX  shift, and go to state 17
 
-    sentence_decl    go to state 27
-    sentence_branch  go to state 20
-    sentence_part    go to state 21
-    sentence_unary   go to state 22
-    id               go to state 23
-    string           go to state 24
-    regex            go to state 28
+    regex  go to state 27
 
 
 State 16
 
-   26 string: STRING .
+   25 string: STRING .
 
-    $default  reduce using rule 26 (string)
+    $default  reduce using rule 25 (string)
 
 
 State 17
 
-   27 regex: REGEX .
+   26 regex: REGEX .
 
-    $default  reduce using rule 27 (regex)
+    $default  reduce using rule 26 (regex)
 
 
 State 18
 
-   20 sentence_unary: '(' . sentence_branch ')'
+   19 sentence_unary: '(' . sentence_branch ')'
 
     ID      shift, and go to state 1
     STRING  shift, and go to state 16
     '('     shift, and go to state 18
 
-    sentence_branch  go to state 29
+    sentence_branch  go to state 28
     sentence_part    go to state 21
     sentence_unary   go to state 22
     id               go to state 23
@@ -294,25 +281,25 @@ State 18
 State 19
 
     6 token_rule: id '=' sentence_decl .
-   10 sentence_decl: sentence_decl . '|' sentence_branch
+    9 sentence_decl: sentence_decl . '|' sentence_branch
 
-    '|'  shift, and go to state 30
+    '|'  shift, and go to state 29
 
     $default  reduce using rule 6 (token_rule)
 
 
 State 20
 
-   11 sentence_decl: sentence_branch .
-   12 sentence_branch: sentence_branch . sentence_part
+   10 sentence_decl: sentence_branch .
+   11 sentence_branch: sentence_branch . sentence_part
 
     ID      shift, and go to state 1
     STRING  shift, and go to state 16
     '('     shift, and go to state 18
 
-    $default  reduce using rule 11 (sentence_decl)
+    $default  reduce using rule 10 (sentence_decl)
 
-    sentence_part   go to state 31
+    sentence_part   go to state 30
     sentence_unary  go to state 22
     id              go to state 23
     string          go to state 24
@@ -320,41 +307,41 @@ State 20
 
 State 21
 
-   13 sentence_branch: sentence_part .
+   12 sentence_branch: sentence_part .
 
-    $default  reduce using rule 13 (sentence_branch)
+    $default  reduce using rule 12 (sentence_branch)
 
 
 State 22
 
-   14 sentence_part: sentence_unary . sentence_decorate sentence_repeatition
-   15              | sentence_unary . sentence_repeatition
-   16              | sentence_unary . sentence_decorate
-   17              | sentence_unary .
+   13 sentence_part: sentence_unary . sentence_decorate sentence_repeatition
+   14              | sentence_unary . sentence_repeatition
+   15              | sentence_unary . sentence_decorate
+   16              | sentence_unary .
 
-    '!'  shift, and go to state 32
-    '*'  shift, and go to state 33
-    '+'  shift, and go to state 34
-    '?'  shift, and go to state 35
+    '!'  shift, and go to state 31
+    '*'  shift, and go to state 32
+    '+'  shift, and go to state 33
+    '?'  shift, and go to state 34
 
-    $default  reduce using rule 17 (sentence_part)
+    $default  reduce using rule 16 (sentence_part)
 
-    sentence_decorate     go to state 36
-    sentence_repeatition  go to state 37
+    sentence_decorate     go to state 35
+    sentence_repeatition  go to state 36
 
 
 State 23
 
-   18 sentence_unary: id .
+   17 sentence_unary: id .
 
-    $default  reduce using rule 18 (sentence_unary)
+    $default  reduce using rule 17 (sentence_unary)
 
 
 State 24
 
-   19 sentence_unary: string .
+   18 sentence_unary: string .
 
-    $default  reduce using rule 19 (sentence_unary)
+    $default  reduce using rule 18 (sentence_unary)
 
 
 State 25
@@ -367,143 +354,133 @@ State 25
 State 26
 
     8 sentence_rule: id ':' sentence_decl .
-   10 sentence_decl: sentence_decl . '|' sentence_branch
+    9 sentence_decl: sentence_decl . '|' sentence_branch
 
-    '|'  shift, and go to state 30
+    '|'  shift, and go to state 29
 
     $default  reduce using rule 8 (sentence_rule)
 
 
 State 27
 
-    9 sentence_rule: '~' id '=' sentence_decl .
-   10 sentence_decl: sentence_decl . '|' sentence_branch
-
-    '|'  shift, and go to state 30
-
-    $default  reduce using rule 9 (sentence_rule)
-
-
-State 28
-
     7 token_rule: '~' id '=' regex .
 
     $default  reduce using rule 7 (token_rule)
 
 
-State 29
+State 28
 
-   12 sentence_branch: sentence_branch . sentence_part
-   20 sentence_unary: '(' sentence_branch . ')'
+   11 sentence_branch: sentence_branch . sentence_part
+   19 sentence_unary: '(' sentence_branch . ')'
 
     ID      shift, and go to state 1
     STRING  shift, and go to state 16
     '('     shift, and go to state 18
-    ')'     shift, and go to state 38
+    ')'     shift, and go to state 37
 
-    sentence_part   go to state 31
+    sentence_part   go to state 30
     sentence_unary  go to state 22
     id              go to state 23
     string          go to state 24
 
 
-State 30
+State 29
 
-   10 sentence_decl: sentence_decl '|' . sentence_branch
+    9 sentence_decl: sentence_decl '|' . sentence_branch
 
     ID      shift, and go to state 1
     STRING  shift, and go to state 16
     '('     shift, and go to state 18
 
-    sentence_branch  go to state 39
+    sentence_branch  go to state 38
     sentence_part    go to state 21
     sentence_unary   go to state 22
     id               go to state 23
     string           go to state 24
 
 
+State 30
+
+   11 sentence_branch: sentence_branch sentence_part .
+
+    $default  reduce using rule 11 (sentence_branch)
+
+
 State 31
 
-   12 sentence_branch: sentence_branch sentence_part .
+   20 sentence_decorate: '!' .
 
-    $default  reduce using rule 12 (sentence_branch)
+    $default  reduce using rule 20 (sentence_decorate)
 
 
 State 32
 
-   21 sentence_decorate: '!' .
+   21 sentence_repeatition: '*' .
 
-    $default  reduce using rule 21 (sentence_decorate)
+    $default  reduce using rule 21 (sentence_repeatition)
 
 
 State 33
 
-   22 sentence_repeatition: '*' .
+   22 sentence_repeatition: '+' .
 
     $default  reduce using rule 22 (sentence_repeatition)
 
 
 State 34
 
-   23 sentence_repeatition: '+' .
+   23 sentence_repeatition: '?' .
 
     $default  reduce using rule 23 (sentence_repeatition)
 
 
 State 35
 
-   24 sentence_repeatition: '?' .
+   13 sentence_part: sentence_unary sentence_decorate . sentence_repeatition
+   15              | sentence_unary sentence_decorate .
 
-    $default  reduce using rule 24 (sentence_repeatition)
+    '*'  shift, and go to state 32
+    '+'  shift, and go to state 33
+    '?'  shift, and go to state 34
+
+    $default  reduce using rule 15 (sentence_part)
+
+    sentence_repeatition  go to state 39
 
 
 State 36
 
-   14 sentence_part: sentence_unary sentence_decorate . sentence_repeatition
-   16              | sentence_unary sentence_decorate .
+   14 sentence_part: sentence_unary sentence_repeatition .
 
-    '*'  shift, and go to state 33
-    '+'  shift, and go to state 34
-    '?'  shift, and go to state 35
-
-    $default  reduce using rule 16 (sentence_part)
-
-    sentence_repeatition  go to state 40
+    $default  reduce using rule 14 (sentence_part)
 
 
 State 37
 
-   15 sentence_part: sentence_unary sentence_repeatition .
+   19 sentence_unary: '(' sentence_branch ')' .
 
-    $default  reduce using rule 15 (sentence_part)
+    $default  reduce using rule 19 (sentence_unary)
 
 
 State 38
 
-   20 sentence_unary: '(' sentence_branch ')' .
-
-    $default  reduce using rule 20 (sentence_unary)
-
-
-State 39
-
-   10 sentence_decl: sentence_decl '|' sentence_branch .
-   12 sentence_branch: sentence_branch . sentence_part
+    9 sentence_decl: sentence_decl '|' sentence_branch .
+   11 sentence_branch: sentence_branch . sentence_part
 
     ID      shift, and go to state 1
     STRING  shift, and go to state 16
     '('     shift, and go to state 18
 
-    $default  reduce using rule 10 (sentence_decl)
+    $default  reduce using rule 9 (sentence_decl)
 
-    sentence_part   go to state 31
+    sentence_part   go to state 30
     sentence_unary  go to state 22
     id              go to state 23
     string          go to state 24
 
 
-State 40
+State 39
 
-   14 sentence_part: sentence_unary sentence_decorate sentence_repeatition .
+   13 sentence_part: sentence_unary sentence_decorate sentence_repeatition .
 
-    $default  reduce using rule 14 (sentence_part)
+    $default  reduce using rule 13 (sentence_part)

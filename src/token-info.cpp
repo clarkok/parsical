@@ -6,14 +6,14 @@
 
 using namespace parsical;
 
-const int TokenInfoVisitor::TOKEN_START;
+const int TokenInfoVisitorBase::TOKEN_START;
 
 char
-TokenInfoVisitor::recoverNonTransChar(parser::TStringNonTransChar *node)
+TokenInfoVisitorBase::recoverNonTransChar(parser::TStringNonTransChar *node)
 { return node->literal[0]; }
 
 char
-TokenInfoVisitor::recoverTransChar(parser::TStringTransChar *node)
+TokenInfoVisitorBase::recoverTransChar(parser::TStringTransChar *node)
 {
     switch (node->literal[1]) {
         case 'a':   return '\a';
@@ -27,6 +27,7 @@ TokenInfoVisitor::recoverTransChar(parser::TStringTransChar *node)
         case '\'':  return '\'';
         case '"':   return '\"';
         case '?':   return '\?';
+        case '/':   return '/';
         case 'x': {
             char ret = 0;
             char lower = std::tolower(node->literal[2]);
@@ -47,7 +48,7 @@ TokenInfoVisitor::recoverTransChar(parser::TStringTransChar *node)
 }
 
 char
-TokenInfoVisitor::recoverChar(parser::TStringChar *node)
+TokenInfoVisitorBase::recoverChar(parser::TStringChar *node)
 {
     assert(node->string_trans_char || node->string_non_trans_char);
 
@@ -60,7 +61,7 @@ TokenInfoVisitor::recoverChar(parser::TStringChar *node)
 }
 
 std::string
-TokenInfoVisitor::recoverString(parser::TString *node)
+TokenInfoVisitorBase::recoverString(parser::TString *node)
 {
     std::string ret;
 
@@ -72,15 +73,15 @@ TokenInfoVisitor::recoverString(parser::TString *node)
 }
 
 std::string
-TokenInfoVisitor::stringTransCharToString(parser::TStringTransChar *node)
+TokenInfoVisitorBase::stringTransCharToString(parser::TStringTransChar *node)
 { return node->literal; }
 
 std::string
-TokenInfoVisitor::stringNonTransCharToString(parser::TStringNonTransChar *node)
+TokenInfoVisitorBase::stringNonTransCharToString(parser::TStringNonTransChar *node)
 { return node->literal; }
 
 std::string
-TokenInfoVisitor::stringCharToString(parser::TStringChar *node)
+TokenInfoVisitorBase::stringCharToString(parser::TStringChar *node)
 {
     if (node->string_non_trans_char) {
         return stringNonTransCharToString(node->string_non_trans_char.get());
@@ -91,7 +92,7 @@ TokenInfoVisitor::stringCharToString(parser::TStringChar *node)
 }
 
 std::string
-TokenInfoVisitor::regexRangeToString(parser::TRegexRange *node)
+TokenInfoVisitorBase::regexRangeToString(parser::TRegexRange *node)
 {
     assert(node->getRule() > 0);
     assert(node->getRule() < 3);
@@ -109,7 +110,7 @@ TokenInfoVisitor::regexRangeToString(parser::TRegexRange *node)
 }
 
 std::string
-TokenInfoVisitor::regexUnaryToString(parser::TRegexUnary *node)
+TokenInfoVisitorBase::regexUnaryToString(parser::TRegexUnary *node)
 {
     assert(node->getRule() > 0);
     assert(node->getRule() < 4);
@@ -137,7 +138,7 @@ TokenInfoVisitor::regexUnaryToString(parser::TRegexUnary *node)
 }
 
 std::string
-TokenInfoVisitor::regexPartToString(parser::TRegexPart *node)
+TokenInfoVisitorBase::regexPartToString(parser::TRegexPart *node)
 {
     std::string ret = regexUnaryToString(node->regex_unary.get());
     if (node->regex_repeatition_opt) {
@@ -147,7 +148,7 @@ TokenInfoVisitor::regexPartToString(parser::TRegexPart *node)
 }
 
 std::string
-TokenInfoVisitor::regexBranchToString(parser::TRegexBranch *node)
+TokenInfoVisitorBase::regexBranchToString(parser::TRegexBranch *node)
 {
     std::string ret;
     for (auto &plus : node->regex_part_plus) {
@@ -157,7 +158,7 @@ TokenInfoVisitor::regexBranchToString(parser::TRegexBranch *node)
 }
 
 std::string
-TokenInfoVisitor::regexContentToString(parser::TRegexContent *node)
+TokenInfoVisitorBase::regexContentToString(parser::TRegexContent *node)
 {
     std::string ret = regexBranchToString(node->regex_branch.get());
     for (auto &rep : node->regex_content_rep_1) {
@@ -167,15 +168,11 @@ TokenInfoVisitor::regexContentToString(parser::TRegexContent *node)
 }
 
 std::string
-TokenInfoVisitor::regexToString(parser::TRegex *node)
+TokenInfoVisitorBase::regexToString(parser::TRegex *node)
 { return regexContentToString(node->regex_content.get()); }
 
-void
-TokenInfoVisitor::visit(parser::TokenRule_Rule1 *node)
-{ _regex_token_table.emplace_back((node->id->literal == "_" ? "_WHITE" : node->id->literal), node->regex.get()); }
-
 std::unique_ptr<FA>
-TokenInfoVisitor::lexerFA()
+TokenInfoVisitorBase::lexerFA()
 {
     std::unique_ptr<FA> fa(new FA());
 
@@ -195,7 +192,7 @@ TokenInfoVisitor::lexerFA()
 }
 
 int
-TokenInfoVisitor::insertRegexIntoFa(FA *fa, parser::TRegex *regex, int accept)
+TokenInfoVisitorBase::insertRegexIntoFa(FA *fa, parser::TRegex *regex, int accept)
 {
     int accept_state = insertRegexContentIntoFa(fa, regex->regex_content.get(), 0);
     fa->getState(accept_state).accept = accept;
@@ -203,7 +200,7 @@ TokenInfoVisitor::insertRegexIntoFa(FA *fa, parser::TRegex *regex, int accept)
 }
 
 int
-TokenInfoVisitor::insertRegexContentIntoFa(FA *fa, parser::TRegexContent *regex_content, int start)
+TokenInfoVisitorBase::insertRegexContentIntoFa(FA *fa, parser::TRegexContent *regex_content, int start)
 {
     int accept_state = fa->createState();
 
@@ -219,7 +216,7 @@ TokenInfoVisitor::insertRegexContentIntoFa(FA *fa, parser::TRegexContent *regex_
 }
 
 int
-TokenInfoVisitor::insertRegexBranchIntoFa(FA *fa, parser::TRegexBranch *regex_branch, int start)
+TokenInfoVisitorBase::insertRegexBranchIntoFa(FA *fa, parser::TRegexBranch *regex_branch, int start)
 {
     for (auto &plus : regex_branch->regex_part_plus) {
         start = insertRegexPartIntoFa(fa, plus.get(), start);
@@ -228,7 +225,7 @@ TokenInfoVisitor::insertRegexBranchIntoFa(FA *fa, parser::TRegexBranch *regex_br
 }
 
 int
-TokenInfoVisitor::insertRegexPartIntoFa(FA *fa, parser::TRegexPart *regex_part, int start)
+TokenInfoVisitorBase::insertRegexPartIntoFa(FA *fa, parser::TRegexPart *regex_part, int start)
 {
     int unary_start = fa->createState();
     fa->addLink(unary_start, start, FA::EMPTY_LINK);
@@ -260,7 +257,7 @@ TokenInfoVisitor::insertRegexPartIntoFa(FA *fa, parser::TRegexPart *regex_part, 
 }
 
 int
-TokenInfoVisitor::insertRegexUnaryIntoFa(FA *fa, parser::TRegexUnary *regex_unary, int start)
+TokenInfoVisitorBase::insertRegexUnaryIntoFa(FA *fa, parser::TRegexUnary *regex_unary, int start)
 {
     switch (regex_unary->getRule()) {
         case 1: {
@@ -312,4 +309,33 @@ TokenInfoVisitor::insertRegexUnaryIntoFa(FA *fa, parser::TRegexUnary *regex_unar
     }
 
     assert(false);
+}
+
+void
+TokenInfoVisitor::visit(parser::TokenRule_Rule1 *node)
+{ _regex_token_table.emplace_back((node->id->literal == "_" ? "_WHITE" : node->id->literal), node->regex.get()); }
+
+FragmentTokenInfoVisitor::FragmentTokenInfoVisitor(SymbolInfoVisitor *si, std::string name)
+    : si(si)
+{
+    assert(si->hasFragment(name));
+    si->findFragment(name)->accept(this);
+    scanned.insert(name);
+}
+
+void
+FragmentTokenInfoVisitor::visit(parser::SentenceUnary_Rule1 *node)
+{
+    if (scanned.find(node->id->literal) != scanned.end()) return;
+
+    scanned.insert(node->id->literal);
+    if (si->hasFragment(node->id->literal)) {
+        si->findFragment(node->id->literal)->accept(this);
+    }
+    else if (si->hasSymbol(node->id->literal)) {
+        si->findSymbol(node->id->literal)->accept(this);
+    }
+    else {
+        si->reportMissing(node->id.get());
+    }
 }

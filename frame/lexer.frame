@@ -1,11 +1,5 @@
-#include <string>
-
-enum TokenType
-{
-#include "output.token"
-};
-
-class Lexer
+class
+#include "output.lexname"
 {
     int _next_token;
     std::string _content;
@@ -15,7 +9,8 @@ class Lexer
     int _line;
     int _column;
 public:
-    Lexer(std::string content)
+#include "output.lexname"
+    (std::string content)
         : _content(content), _iter(_content.begin()), _token(""), _line(1), _column(1)
     { }
 
@@ -33,7 +28,7 @@ public:
 
     void next()
     {
-#include "output.table"
+#include "output.lextable"
 
         int state = 0;
         auto begin = _iter;

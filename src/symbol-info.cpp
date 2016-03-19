@@ -33,6 +33,9 @@ SymbolInfoVisitor::visit(parser::TokenRule_Rule1 *node)
         reportDuplicated(node->id.get(), _symbol_table[node->id->literal]);
     }
 
+    _symbol_name[_symbol_id_counter] = node->id->literal;
+    _symbol_id[node->id->literal] = _symbol_id_counter++;
+
     _symbol_table[node->id->literal] = node->regex.get();
 }
 
@@ -42,6 +45,9 @@ SymbolInfoVisitor::visit(parser::TokenRule_Rule2 *node)
     if (_symbol_table.find(node->id->literal) != _symbol_table.end()) {
         reportDuplicated(node->id.get(), _symbol_table[node->id->literal]);
     }
+
+    _symbol_name[_symbol_id_counter] = node->id->literal;
+    _symbol_id[node->id->literal] = _symbol_id_counter++;
 
     _symbol_table[node->id->literal] = node->sentence_decl.get();
 }
@@ -53,25 +59,23 @@ SymbolInfoVisitor::visit(parser::TokenRule_Rule3 *node)
         reportDuplicated(node->id.get(), _fragment_table[node->id->literal]);
     }
 
+    if (_symbol_id.find(node->id->literal) == _symbol_id.end()) {
+        _symbol_name[_symbol_id_counter] = node->id->literal;
+        _symbol_id[node->id->literal] = _symbol_id_counter++;
+    }
+
     _fragment_table[node->id->literal] = node->regex.get();
 }
 
 void
-SymbolInfoVisitor::visit(parser::SentenceRule_Rule1 *node)
+SymbolInfoVisitor::visit(parser::SentenceRule *node)
 {
     if (_symbol_table.find(node->id->literal) != _symbol_table.end()) {
         reportDuplicated(node->id.get(), _symbol_table[node->id->literal]);
     }
 
+    _symbol_name[_symbol_id_counter] = node->id->literal;
+    _symbol_id[node->id->literal] = _symbol_id_counter++;
+
     _symbol_table[node->id->literal] = node->sentence_decl.get();
-}
-
-void
-SymbolInfoVisitor::visit(parser::SentenceRule_Rule2 *node)
-{
-    if (_fragment_table.find(node->id->literal) != _fragment_table.end()) {
-        reportDuplicated(node->id.get(), _fragment_table[node->id->literal]);
-    }
-
-    _fragment_table[node->id->literal] = node->sentence_decl.get();
 }

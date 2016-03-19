@@ -13,7 +13,7 @@ parse_string_trans_char(Location location, std::string::iterator &iter)
     switch (*iter) {
         case 'a':   case 'b':   case 'f':   case 'n':
         case 'r':   case 't':   case 'v':   case '\\':
-        case '\'':  case '"':   case '?':
+        case '\'':  case '"':   case '?':   case '/':
             return new TStringTransChar(location, std::string(begin, ++iter));
         default:
             return new TStringTransChar(location, std::string(begin, iter += 3));

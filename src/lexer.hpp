@@ -12,7 +12,7 @@ namespace parsical {
 
 class Lexer
 {
-    TokenInfoVisitor _token_info;
+    std::unique_ptr<TokenInfoVisitorBase> _token_info;
     std::unique_ptr<FA> _dfa;
 
     void outputNextStateTable(std::ostream &_os);
@@ -20,10 +20,15 @@ class Lexer
 
 public:
     Lexer(parser::Grammar *grammar)
+        : _token_info(new TokenInfoVisitor())
     {
-        grammar->accept(&_token_info);
-        _dfa = _token_info.lexerFA()->nfa2dfa();
+        grammar->accept(_token_info.get());
+        _dfa = _token_info->lexerFA()->nfa2dfa();
     }
+
+    Lexer(TokenInfoVisitorBase *token_info)
+        : _token_info(token_info)
+    { _dfa = _token_info->lexerFA()->nfa2dfa(); }
 
     ~Lexer() = default;
 
