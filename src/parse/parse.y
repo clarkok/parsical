@@ -75,6 +75,10 @@ token_rule:
         {
             $$ = new TokenRule_Rule3(_current_location, dynamic_cast<TId*>($2), dynamic_cast<TRegex*>($4));
         }
+    | '~' id '=' sentence_decl
+        {
+            $$ = new TokenRule_Rule4(_current_location, dynamic_cast<TId*>($2), dynamic_cast<SentenceDecl*>($4));
+        }
     ;
 
 sentence_rule:

@@ -8,6 +8,8 @@
 #include <cassert>
 #include <iostream>
 
+#include "comparable-set.hpp"
+
 namespace parsical {
 
 class FA
@@ -41,86 +43,7 @@ public:
         friend class FA;
     };
 
-    class StateSet
-    {
-        std::set<FA::state_id_t> _set;
-    public:
-        StateSet() = default;
-        StateSet(const StateSet &) = default;
-        StateSet(StateSet &&) = default;
-
-        ~StateSet() = default;
-
-        void
-        insert(FA::state_id_t item)
-        { _set.insert(item); }
-
-        bool
-        hasState(FA::state_id_t state)
-        { return _set.find(state) != _set.end(); }
-
-        auto
-        begin() -> decltype(StateSet::_set.begin())
-        { return _set.begin(); }
-
-        auto
-        begin() const -> decltype(StateSet::_set.cbegin())
-        { return _set.cbegin(); }
-
-        auto
-        end() -> decltype(StateSet::_set.end())
-        { return _set.end(); }
-
-        auto
-        end() const -> decltype(StateSet::_set.cend())
-        { return _set.cend(); }
-
-        size_t
-        size() const
-        { return _set.size(); }
-
-        void
-        join(const StateSet &b)
-        { _set.insert(b.begin(), b.end()); }
-
-        bool
-        operator < (const StateSet &b) const
-        {
-            auto ia = begin();
-            auto ib = b.begin();
-
-            while (ia != end() && ib != b.end()) {
-                if (*ia != *ib) {
-                    return *ia < *ib;
-                }
-                ++ia; ++ib;
-            }
-
-            if (ib != b.end()) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-
-        bool
-        operator == (const StateSet &b) const
-        {
-            if (size() != b.size()) { return false; }
-
-            auto ia = begin();
-            auto ib = b.begin();
-            while (ia != end() && ib != b.end()) {
-                if (*ia != *ib) {
-                    return false;
-                }
-                ++ia; ++ib;
-            }
-
-            return (ia == end() && ib == b.end());
-        }
-    };
+    typedef ComparableSet<state_id_t> StateSet;
 
 private:
     std::vector<State> _states;

@@ -11,8 +11,7 @@
 #include "symbol-info.hpp"
 #include "fa.hpp"
 
-namespace parsical
-{
+namespace parsical {
 
 struct RegexToken
 {
@@ -64,7 +63,7 @@ public:
     auto end() -> decltype(TokenInfoVisitorBase::_regex_token_table.end())
     { return _regex_token_table.end(); }
 
-    std::unique_ptr<FA> lexerFA();
+    virtual std::unique_ptr<FA> lexerFA();
 };
 
 class TokenInfoVisitor : public TokenInfoVisitorBase
@@ -72,6 +71,8 @@ class TokenInfoVisitor : public TokenInfoVisitorBase
 public:
     TokenInfoVisitor() = default;
     virtual ~TokenInfoVisitor() = default;
+
+    virtual std::unique_ptr<FA> lexerFA();
 
     define_visitor_visit(parser::TokenRule_Rule1)
 };

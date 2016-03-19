@@ -1,5 +1,6 @@
 #include "report.hpp"
 #include "symbol-info.hpp"
+#include "token-info.hpp"
 
 using namespace parsical;
 
@@ -68,6 +69,21 @@ SymbolInfoVisitor::visit(parser::TokenRule_Rule3 *node)
 }
 
 void
+SymbolInfoVisitor::visit(parser::TokenRule_Rule4 *node)
+{
+    if (_fragment_table.find(node->id->literal) != _fragment_table.end()) {
+        reportDuplicated(node->id.get(), _fragment_table[node->id->literal]);
+    }
+
+    if (_symbol_id.find(node->id->literal) == _symbol_id.end()) {
+        _symbol_name[_symbol_id_counter] = node->id->literal;
+        _symbol_id[node->id->literal] = _symbol_id_counter++;
+    }
+
+    _fragment_table[node->id->literal] = node->sentence_decl.get();
+}
+
+void
 SymbolInfoVisitor::visit(parser::SentenceRule *node)
 {
     if (_symbol_table.find(node->id->literal) != _symbol_table.end()) {
@@ -78,4 +94,17 @@ SymbolInfoVisitor::visit(parser::SentenceRule *node)
     _symbol_id[node->id->literal] = _symbol_id_counter++;
 
     _symbol_table[node->id->literal] = node->sentence_decl.get();
+}
+
+void
+SymbolInfoVisitor::visit(parser::TString *node)
+{
+    std::string original = "\"" + TokenInfoVisitorBase::recoverString(node) + "\"";
+
+    if (_symbol_table.find(original) != _symbol_table.end()) { return; }
+
+    _symbol_name[_symbol_id_counter] = original;
+    _symbol_id[original] = _symbol_id_counter++;
+
+    _symbol_table[original] = node;
 }

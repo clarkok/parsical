@@ -4,6 +4,7 @@
 
 #include "report.hpp"
 #include "driver.hpp"
+#include "normalize.hpp"
 
 #include "lexer.hpp"
 
@@ -18,8 +19,24 @@ Driver::Driver(int argc, char **argv)
     parser::ParsicalParser pp;
     _parser_tree.reset(pp.parse_file(*argv));
 
+    NormalizeVisitor(_parser_tree.get());
+
     _symbols.reset(new SymbolInfoVisitor());
     _parser_tree->accept(_symbols.get());
+
+    {
+        std::ofstream fsymbols("./output.symbols");
+
+        for (auto iter = _symbols->fragmentBegin(); iter != _symbols->fragmentEnd(); ++iter) {
+            fsymbols << iter->first << std::endl;
+        }
+
+        fsymbols << std::endl;
+
+        for (auto iter = _symbols->symbolBegin(); iter != _symbols->symbolEnd(); ++iter) {
+            fsymbols << iter->first << std::endl;
+        }
+    }
 
     _output_name = getOutputNameFromPath(*argv);
 
@@ -82,6 +99,7 @@ Driver::generateStructureLexers()
 
         std::cout << ("cpp -o " + lex_name + " " + _temp_dir + "lexer.frame").c_str() << std::endl;
         std::system(("cpp -o " + lex_name + " " + _temp_dir + "lexer.frame").c_str());
+        std::system(("rm " + _temp_dir + "output.lexname " + _temp_dir + "output.lextable").c_str());
     }
 }
 

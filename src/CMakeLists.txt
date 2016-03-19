@@ -1,4 +1,4 @@
-add_executable(parsical main.cpp parsical-parser.cpp parse/lex.yy.cpp parse/parse.tab.cpp print-visitor.cpp token-info.cpp fa.cpp lexer.cpp symbol-info.cpp report.cpp driver.cpp first-set.cpp)
+add_executable(parsical main.cpp parsical-parser.cpp parse/lex.yy.cpp parse/parse.tab.cpp print-visitor.cpp token-info.cpp fa.cpp lexer.cpp symbol-info.cpp report.cpp driver.cpp first-set.cpp rule-info.cpp normalize.cpp)
 
 add_custom_command(
     OUTPUT ${PROJECT_SOURCE_DIR}/src/parse/lex.yy.cpp

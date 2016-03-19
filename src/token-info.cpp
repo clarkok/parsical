@@ -184,10 +184,6 @@ TokenInfoVisitorBase::lexerFA()
         insertRegexIntoFa(fa.get(), token.regex, accept++);
     }
 
-    for (int i = 1; i < 256; ++i) {
-        fa->addLink(fa->createState(i), 0, i);
-    }
-
     return fa;
 }
 
@@ -311,6 +307,18 @@ TokenInfoVisitorBase::insertRegexUnaryIntoFa(FA *fa, parser::TRegexUnary *regex_
     assert(false);
 }
 
+std::unique_ptr<FA>
+TokenInfoVisitor::lexerFA()
+{
+    auto fa = TokenInfoVisitorBase::lexerFA();
+
+    for (int i = 1; i < 256; ++i) {
+        fa->addLink(fa->createState(i), 0, i);
+    }
+
+    return fa;
+}
+
 void
 TokenInfoVisitor::visit(parser::TokenRule_Rule1 *node)
 { _regex_token_table.emplace_back((node->id->literal == "_" ? "_WHITE" : node->id->literal), node->regex.get()); }
@@ -330,10 +338,24 @@ FragmentTokenInfoVisitor::visit(parser::SentenceUnary_Rule1 *node)
 
     scanned.insert(node->id->literal);
     if (si->hasFragment(node->id->literal)) {
-        si->findFragment(node->id->literal)->accept(this);
+        auto *fragment = si->findFragment(node->id->literal);
+        if (fragment->getType() == parser::N_REGEX) {
+            std::cout << node->id->literal << std::endl;
+            _regex_token_table.emplace_back(node->id->literal, dynamic_cast<parser::TRegex*>(fragment));
+        }
+        else {
+            fragment->accept(this);
+        }
     }
     else if (si->hasSymbol(node->id->literal)) {
-        si->findSymbol(node->id->literal)->accept(this);
+        auto *symbol = si->findSymbol(node->id->literal);
+        if (symbol->getType() == parser::N_REGEX) {
+            std::cout << node->id->literal << std::endl;
+            _regex_token_table.emplace_back(node->id->literal, dynamic_cast<parser::TRegex*>(symbol));
+        }
+        else {
+            symbol->accept(this);
+        }
     }
     else {
         si->reportMissing(node->id.get());

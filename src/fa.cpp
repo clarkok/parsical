@@ -27,7 +27,7 @@ FA::getClosure(state_id_t state, int ch)
     while (!q.empty()) {
         auto &st = getState(q.front()); q.pop();
         for (auto iter = st.links.lower_bound(EMPTY_LINK), limit = st.links.upper_bound(EMPTY_LINK); iter != limit; ++iter) {
-            if (!ret.hasState(iter->second)) {
+            if (!ret.has(iter->second)) {
                 ret.insert(iter->second);
                 q.push(iter->second);
             }

@@ -29,7 +29,9 @@ public:
     define_visitor_visit(parser::TokenRule_Rule1)
     define_visitor_visit(parser::TokenRule_Rule2)
     define_visitor_visit(parser::TokenRule_Rule3)
+    define_visitor_visit(parser::TokenRule_Rule4)
     define_visitor_visit(parser::SentenceRule)
+    define_visitor_visit(parser::TString)
 
     inline bool
     hasSymbol(std::string name)

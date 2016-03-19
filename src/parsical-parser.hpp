@@ -1,5 +1,5 @@
-#ifndef _PARSICAL_PARSER_HPP_
-#define _PARSICAL_PARSER_HPP_
+#ifndef __PARSICAL_PARSER_HPP__
+#define __PARSICAL_PARSER_HPP__
 
 #include <string>
 #include <memory>
@@ -47,6 +47,7 @@ class TokenRule;
 class TokenRule_Rule1;
 class TokenRule_Rule2;
 class TokenRule_Rule3;
+class TokenRule_Rule4;
 class SentenceRule;
 class SentenceDecl;
 class SentenceBranch;
@@ -93,6 +94,7 @@ class TokenNode;
     macro(parsical::parser::TokenRule_Rule1)                \
     macro(parsical::parser::TokenRule_Rule2)                \
     macro(parsical::parser::TokenRule_Rule3)                \
+    macro(parsical::parser::TokenRule_Rule4)                \
     macro(parsical::parser::SentenceRule)                   \
     macro(parsical::parser::SentenceDecl)                   \
     macro(parsical::parser::SentenceBranch)                 \
@@ -910,6 +912,27 @@ public:
     virtual int
     getRule() const
     { return 3; }
+
+    virtual void
+    accept(Visitor *v)
+    { v->visit(this); }
+};
+
+class TokenRule_Rule4 : public TokenRule
+{
+public:
+    std::unique_ptr<TId>    id;
+    std::unique_ptr<SentenceDecl> sentence_decl;
+
+    TokenRule_Rule4(Location location, TId *id, SentenceDecl *sentence_decl)
+        : TokenRule(location), id(id), sentence_decl(sentence_decl)
+    { }
+
+    virtual ~TokenRule_Rule4() = default;
+
+    virtual int
+    getRule() const
+    { return 4; }
 
     virtual void
     accept(Visitor *v)
